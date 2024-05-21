@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">transport</string>
+    <string name="importer_des_photos">Importer des photos</string>
+    <string name="donnez_votre_descriptif_du_probl_me">Donnez votre descriptif du problème :</string>
+    <string name="description_du_probl_me">Description du problème :</string>
+    <string name="s_lectionnez_un_type">Sélectionnez un type</string>
+    <string name="signaler_le_probl_me">Signaler le problème</string>
+    <string name="s_lectionnez_une_gravit">Sélectionnez une gravité</string>
+    <string name="donnez_votre_descriptif_du_probl_me2">Donnez votre descriptif du problème :</string>
+    <string name="entrez_votre_e_mail">Entrez votre e-mail</string>
+    <string name="s_lectionnez_un_type2">Sélectionnez un type</string>
+    <string name="appuyer_sur_le_boutton_pour_prendre_des_photos">Appuyer sur le boutton pour prendre des photos:</string>
+    <string name="prendre_des_photos">Prendre des photos</string>
+    <string name="ajouter_des_photos">Ajouter des photos</string>
+    <string name="appuyer_sur_le_boutton_pour_ajouter_des_photos">Appuyer sur le boutton pour ajouter des photos:</string>
+    <string name="ajouter_des_photos2">Ajouter des photos :</string>
+    <string name="adresse_e_mail">Adresse e-mail :</string>
+    <string name="gravit_du_probl_me">Gravité du problème :</string>
+    <string name="description_du_probl_me2">Description du problème :</string>
+    <string name="importer_des_photos2">Importer des photos</string>
+    <string name="je_certifie_l_authenticit_des_informations2">Je certifie l\'authenticité des informations</string>
+    <string name="signaler_le_probl_me2">Signaler le problème</string>
+    <string name="type_de_probl_me">Type de problème :</string>
+    <string name="name_username">name username</string>
+    <string name="location">location</string>
+    <string name="name_username2">name username</string>
+</resources>

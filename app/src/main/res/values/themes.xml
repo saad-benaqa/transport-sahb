@@ -1,0 +1,21 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Transport" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/dark_blue</item>
+        <item name="colorPrimaryVariant">@color/darkdark_blue</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+
+
+        <item name="colorSecondary">@color/secon</item>
+        <item name="colorSecondaryVariant">@color/seconn</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+
+
+
+    </style>
+
+    <style name="Theme.Transport" parent="Base.Theme.Transport" />
+</resources>
