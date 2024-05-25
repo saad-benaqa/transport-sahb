@@ -67,8 +67,11 @@ public class ResponsableActivity extends AppCompatActivity {
 
 
         personalInfoButton.setOnClickListener(v -> {
+            String codeConfidentiel = getIntent().getStringExtra("codeConfidentiel");
             Intent intent = new Intent(ResponsableActivity.this, infoResEditActivity.class);
+            intent.putExtra("codeConfidentiel", codeConfidentiel);
             startActivity(intent);
+
         });
 
         pickImageButton.setOnClickListener(v -> openGallery());

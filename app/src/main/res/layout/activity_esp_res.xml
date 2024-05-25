@@ -70,7 +70,7 @@
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/username"
+                    android:id="@+id/codeConfidentiel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="40dp"
@@ -97,7 +97,7 @@
 
 
                 <Button
-                    android:id="@+id/loginButton"
+                    android:id="@+id/validerButton"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginTop="30dp"

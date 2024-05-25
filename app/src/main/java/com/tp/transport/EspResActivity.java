@@ -1,76 +1,64 @@
 package com.tp.transport;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class EspResActivity extends AppCompatActivity {
 
-    EditText username;
-    EditText password;
-    Button loginButton;
+    private static final String TAG = "EspresActivity";
+
+    private EditText codeConfidentielEditText;
+    private Button validerButton;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_esp_res);
 
-        BottomNavigationView nav = findViewById(R.id.bottomNav);
-        nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+        codeConfidentielEditText = findViewById(R.id.codeConfidentiel);
+        validerButton = findViewById(R.id.validerButton);
+        db = FirebaseFirestore.getInstance();
+
+        validerButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (item.getItemId()==R.id.nav_signale){
-                    Intent intent = new Intent(EspResActivity.this, SignalementActivity.class);
-                    startActivity(intent);
-                    return true;
-                }else if(item.getItemId()==R.id.nav_home) {
-                    Intent intent = new Intent(EspResActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    return true;
-                }else if(item.getItemId()==R.id.nav_res) {
-                    Intent intent = new Intent(EspResActivity.this, EspResActivity.class);
-                    startActivity(intent);
-                    return true;
+            public void onClick(View v) {
+                String enteredCode = codeConfidentielEditText.getText().toString().trim();
+                if (!enteredCode.isEmpty()) {
+                    checkCodeConfidentiel(enteredCode);
+                } else {
+                    Toast.makeText(EspResActivity.this, "Veuillez entrer un code confidentiel", Toast.LENGTH_SHORT).show();
                 }
-
-
-                return false;
             }
         });
+    }
 
-
-        ImageView back = findViewById(R.id.back11);
-
-        loginButton = findViewById(R.id.loginButton);
-
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(EspResActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
-
-
-
-        username = findViewById(R.id.username);
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(EspResActivity.this, ResponsableActivity.class);
-                startActivity(intent);
-            }
-        });
+    private void checkCodeConfidentiel(String codeConfidentiel) {
+        CollectionReference responsablesCollection = db.collection("Responsables");
+        responsablesCollection.whereEqualTo("codeConfidentiel", codeConfidentiel)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        Intent intent = new Intent(EspResActivity.this, ResponsableActivity.class);
+                        intent.putExtra("codeConfidentiel", codeConfidentiel);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(EspResActivity.this, "Code confidentiel invalide", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Erreur lors de la recherche du code confidentiel : ", e);
+                    Toast.makeText(EspResActivity.this, "Erreur lors de la vérification du code confidentiel", Toast.LENGTH_SHORT).show();
+                });
     }
 }

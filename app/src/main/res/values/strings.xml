@@ -24,4 +24,5 @@
     <string name="name_username">name username</string>
     <string name="location">location</string>
     <string name="name_username2">name username</string>
+    <string name="prenom">Prenom</string>
 </resources>
