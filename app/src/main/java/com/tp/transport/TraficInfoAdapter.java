@@ -1,11 +1,9 @@
 package com.tp.transport;
 
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,73 +11,54 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class TraficInfoAdapter extends RecyclerView.Adapter<TraficInfoAdapter.TraficInfoViewHolder> {
+public class TraficInfoAdapter extends RecyclerView.Adapter<TraficInfoAdapter.TraficViewHolder> {
 
-    private Context context;
-    private List<TraficInfo> traficInfoList;
+    private final List<TraficInfo> signalementList;
 
-    public TraficInfoAdapter(List<TraficInfo> traficInfoList) {
-        this.context = context;
-        this.traficInfoList = traficInfoList;
+
+    public TraficInfoAdapter(List<TraficInfo> signalementList) {
+        this.signalementList = signalementList;
     }
 
     @NonNull
     @Override
-    public TraficInfoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_trafic_info, parent, false);
-        return new TraficInfoViewHolder(itemView);
+    public TraficInfoAdapter.TraficViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_signalement, parent, false);
+        return new TraficInfoAdapter.TraficViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TraficInfoViewHolder holder, int position) {
-        TraficInfo traficInfo = traficInfoList.get(position);
-        holder.bind(traficInfo);
+    public void onBindViewHolder(@NonNull TraficInfoAdapter.TraficViewHolder holder, int position) {
+        TraficInfo signalement = signalementList.get(position);
+        holder.bind(signalement);
     }
 
     @Override
     public int getItemCount() {
-        return traficInfoList.size();
+        return signalementList.size();
     }
 
-    public class TraficInfoViewHolder extends RecyclerView.ViewHolder {
+    public static class TraficViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView villeTextView;
-        private TextView dateTextView;
-        private TextView descriptionTextView;
-        private LinearLayout expandableLayout;
-        private TextView descriptionDetailleeTextView;
+        private final TextView textViewProblemType;
+        private final TextView textViewContactEmail;
+        private final TextView textViewGravity;
+        private final TextView textViewDescription;
 
-        public TraficInfoViewHolder(@NonNull View itemView) {
+        public TraficViewHolder(@NonNull View itemView) {
             super(itemView);
-            villeTextView = itemView.findViewById(R.id.textViewVille);
-            dateTextView = itemView.findViewById(R.id.textViewDate);
-            descriptionTextView = itemView.findViewById(R.id.textViewDescription);
-            descriptionDetailleeTextView = itemView.findViewById(R.id.textViewDescriptionDetaillee);
-            expandableLayout = itemView.findViewById(R.id.expandableLayout);
-
-            descriptionTextView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    TraficInfo traficInfo = traficInfoList.get(getAdapterPosition());
-                    traficInfo.setExpanded(!traficInfo.isExpanded());
-                    notifyItemChanged(getAdapterPosition());
-                }
-            });
+            textViewProblemType = itemView.findViewById(R.id.problem_type);
+            textViewContactEmail = itemView.findViewById(R.id.contact_email);
+            textViewGravity = itemView.findViewById(R.id.gravity);
+            textViewDescription = itemView.findViewById(R.id.description);
         }
 
-        public void bind(TraficInfo traficInfo) {
-            villeTextView.setText(traficInfo.getVille());
-            dateTextView.setText(traficInfo.getDate());
-            descriptionTextView.setText(traficInfo.getDescription());
-            descriptionDetailleeTextView.setText(traficInfo.getDescriptionDetaillee());
-
-            // Gérer l'état d'expansion/réduction de l'accordion
-            if (traficInfo.isExpanded()) {
-                expandableLayout.setVisibility(View.VISIBLE);
-                descriptionDetailleeTextView.setText(traficInfo.getDescriptionDetaillee());
-            } else {
-                expandableLayout.setVisibility(View.GONE);
-            }
+        @SuppressLint("SetTextI18n")
+        public void bind(TraficInfo signalement) {
+            textViewProblemType.setText("Type de problème : " + signalement.getProblemType());
+            textViewContactEmail.setText("Email de contact : " + signalement.getContactEmail());
+            textViewGravity.setText("Gravité : " + signalement.getGravity());
+            textViewDescription.setText("Description : " + signalement.getDescription());
         }
     }
 }

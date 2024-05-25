@@ -1,5 +1,6 @@
 package com.tp.transport;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -13,22 +14,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TraficInfoActivity extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
     private TraficInfoAdapter adapter;
     private List<TraficInfo> traficInfoList;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trafic_info);
 
-
+        db = FirebaseFirestore.getInstance();
+        traficInfoList = new ArrayList<>();
+        adapter = new TraficInfoAdapter(traficInfoList);
 
         BottomNavigationView nav = findViewById(R.id.bottomNav);
         nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -53,28 +58,12 @@ public class TraficInfoActivity extends AppCompatActivity {
             }
         });
 
-        // Initialisation des données d'informations sur le trafic (à remplacer par vos données réelles)
-        traficInfoList = new ArrayList<>();
-        traficInfoList.add(new TraficInfo("Ville A", "01/04/2024", "Description 1", "Description détaillée 1"));
-        traficInfoList.add(new TraficInfo("Ville B", "02/04/2024", "Description 2", "Description détaillée 2"));
-        traficInfoList.add(new TraficInfo("Ville B", "02/04/2024", "Description 2", "Description détaillée 2"));
-        traficInfoList.add(new TraficInfo("Ville B", "02/04/2024", "Description 2", "Description détaillée 2"));
-        traficInfoList.add(new TraficInfo("Ville B", "02/04/2024", "Description 2", "Description détaillée 2"));
-        traficInfoList.add(new TraficInfo("Ville B", "02/04/2024", "Description 2", "Description détaillée 2"));
-        traficInfoList.add(new TraficInfo("Ville B", "02/04/2024", "Description 2", "Description détaillée 2"));
-        traficInfoList.add(new TraficInfo("Ville B", "02/04/2024", "Description 2", "Description détaillée 2"));
-
-
-
         // Configuration du RecyclerView et de l'adaptateur
-        recyclerView = findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new TraficInfoAdapter(traficInfoList);
         recyclerView.setAdapter(adapter);
 
-
         ImageView back = findViewById(R.id.back1111);
-
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,7 +72,22 @@ public class TraficInfoActivity extends AppCompatActivity {
             }
         });
 
+        loadSignalements();
+    }
 
+    @SuppressLint("NotifyDataSetChanged")
+    private void loadSignalements() {
+        db.collection("signalements")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (DocumentChange document : task.getResult().getDocumentChanges()) {
+                            TraficInfo signalement = document.getDocument().toObject(TraficInfo.class);
+                            traficInfoList.add(signalement);
+                        }
+                        adapter.notifyDataSetChanged();
+                    }  // Gérer l'erreur lors du chargement des données
+
+                });
     }
 }
-
