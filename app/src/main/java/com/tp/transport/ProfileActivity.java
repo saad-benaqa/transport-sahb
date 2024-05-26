@@ -14,7 +14,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -114,12 +113,13 @@ public class ProfileActivity extends Activity {
             // Mettre à jour l'image de profil si une nouvelle image a été choisie
             if (selectedImageUri != null) {
                 uploadImageToFirebase(selectedImageUri);
-            } else {
-                startActivity(new Intent(ProfileActivity.this, DashActivity.class));
             }
 
             // Mettre à jour les autres informations utilisateur
             updateUserInfo();
+            startActivity(new Intent(ProfileActivity.this, DashActivity.class));
+
+
         });
     }
 
@@ -159,13 +159,6 @@ public class ProfileActivity extends Activity {
                         storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
                             // Save the URL to Firestore
                             saveImageUrlToFirestore(userId, uri.toString());
-                            // Mettre à jour l'ImageView avec la nouvelle image
-                            Glide.with(ProfileActivity.this).load(uri).into(imageView);
-
-                            // Passer l'URL de l'image à DashActivity
-                            Intent dashIntent = new Intent(ProfileActivity.this, DashActivity.class);
-                            dashIntent.putExtra("image_url_key", uri.toString());
-                            startActivity(dashIntent);
                         });
                     })
                     .addOnFailureListener(e -> Toast.makeText(ProfileActivity.this, "Failed to upload image", Toast.LENGTH_SHORT).show());
@@ -192,18 +185,12 @@ public class ProfileActivity extends Activity {
                             String nom = documentSnapshot.getString("nom");
                             String numTeleStr = documentSnapshot.getString("num_telephone");
                             String emailStr = documentSnapshot.getString("email");
-                            String profileImageUrl = documentSnapshot.getString("profile_image_url");
 
                             // Charger les informations utilisateur dans les vues correspondantes
                             FirstName.setText(prenom);
                             LastName.setText(nom);
                             email.setText(emailStr);
                             numTele.setText(numTeleStr);
-
-                            // Charger l'image de profil si elle existe
-                            if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
-                                Glide.with(ProfileActivity.this).load(profileImageUrl).into(imageView);
-                            }
                         }
                     })
                     .addOnFailureListener(e -> Toast.makeText(ProfileActivity.this, "Échec du chargement des données utilisateur", Toast.LENGTH_SHORT).show());
@@ -233,6 +220,10 @@ public class ProfileActivity extends Activity {
                                 .addOnFailureListener(e -> Toast.makeText(ProfileActivity.this, "Échec de la mise à jour du mot de passe dans Firestore", Toast.LENGTH_SHORT).show());
                     })
                     .addOnFailureListener(e -> Toast.makeText(ProfileActivity.this, "Échec de la mise à jour du mot de passe", Toast.LENGTH_SHORT).show());
+        } else {
+            // Gérer le cas où currentUser est null
+            Toast.makeText(ProfileActivity.this, "Utilisateur non connecté", Toast.LENGTH_SHORT).show();
+            // Rediriger l'utilisateur vers la connexion ou gérer comme nécessaire
         }
     }
 
@@ -243,12 +234,14 @@ public class ProfileActivity extends Activity {
             String prenom = FirstName.getText().toString();
             String nom = LastName.getText().toString();
             String numTeleStr = numTele.getText().toString();
-            String emailStr = email.getText().toString();
 
             db.collection("utilisateurs").document(userId)
-                    .update("prenom", prenom, "nom", nom, "num_telephone", numTeleStr, "email", emailStr)
+                    .update("prenom", prenom, "nom", nom, "num_telephone", numTeleStr)
                     .addOnSuccessListener(aVoid -> Toast.makeText(ProfileActivity.this, "Informations utilisateur mises à jour avec succès", Toast.LENGTH_SHORT).show())
                     .addOnFailureListener(e -> Toast.makeText(ProfileActivity.this, "Échec de la mise à jour des informations utilisateur", Toast.LENGTH_SHORT).show());
         }
     }
 }
+
+//modifier.setOnClickListener(vv -> startActivity(new Intent(ProfileActivity.this, DashActivity.class)));
+

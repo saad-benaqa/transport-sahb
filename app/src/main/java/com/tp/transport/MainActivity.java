@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         ImageView buttonSignaler = findViewById(R.id.buttonSignaler);
-        ImageView trafic = findViewById(R.id.trafic);
         buttonSignaler.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -73,14 +72,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
 
         }
-        });
-        trafic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, TraficInfoActivity.class);
-                startActivity(intent);
-
-            }
         });
         EditText searchEditText = findViewById(R.id.editTextText3);
         searchEditText.setOnClickListener(new View.OnClickListener() {

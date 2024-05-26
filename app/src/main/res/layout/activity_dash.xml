@@ -68,15 +68,16 @@
                     android:layout_width="122dp"
                     android:layout_height="119dp"
                     android:layout_gravity="center"
-                    android:background="@drawable/circle_background"
+                    android:background="@drawable/circle_shape"
                     android:scaleType="centerCrop"
+                    android:clipToOutline="true"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.498"
                     app:layout_constraintStart_toStartOf="@+id/imageView5"
                     app:layout_constraintTop_toTopOf="@+id/imageView5"
                     app:layout_constraintVertical_bias="1.0"
-                    app:srcCompat="@drawable/person_purple" />
+                    app:srcCompat="@drawable/user_1" />
 
 
                 <TextView
