@@ -1,6 +1,8 @@
 package com.tp.transport;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,23 +16,30 @@ import java.util.List;
 public class TraficInfoAdapter extends RecyclerView.Adapter<TraficInfoAdapter.TraficViewHolder> {
 
     private final List<TraficInfo> signalementList;
+    private final OnItemClickListener onItemClickListener;
+    private final Context context;
 
+    public interface OnItemClickListener {
+        void onItemClick(TraficInfo traficInfo);
+    }
 
-    public TraficInfoAdapter(List<TraficInfo> signalementList) {
+    public TraficInfoAdapter(Context context, List<TraficInfo> signalementList, OnItemClickListener onItemClickListener) {
+        this.context = context;
         this.signalementList = signalementList;
+        this.onItemClickListener = onItemClickListener;
     }
 
     @NonNull
     @Override
-    public TraficInfoAdapter.TraficViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public TraficViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_signalement, parent, false);
-        return new TraficInfoAdapter.TraficViewHolder(itemView);
+        return new TraficViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TraficInfoAdapter.TraficViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull TraficViewHolder holder, int position) {
         TraficInfo signalement = signalementList.get(position);
-        holder.bind(signalement);
+        holder.bind(signalement, onItemClickListener);
     }
 
     @Override
@@ -38,7 +47,7 @@ public class TraficInfoAdapter extends RecyclerView.Adapter<TraficInfoAdapter.Tr
         return signalementList.size();
     }
 
-    public static class TraficViewHolder extends RecyclerView.ViewHolder {
+    public class TraficViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView textViewProblemType;
         private final TextView textViewContactEmail;
@@ -54,11 +63,18 @@ public class TraficInfoAdapter extends RecyclerView.Adapter<TraficInfoAdapter.Tr
         }
 
         @SuppressLint("SetTextI18n")
-        public void bind(TraficInfo signalement) {
+        public void bind(final TraficInfo signalement, final OnItemClickListener listener) {
             textViewProblemType.setText("Type de problème : " + signalement.getProblemType());
             textViewContactEmail.setText("Email de contact : " + signalement.getContactEmail());
             textViewGravity.setText("Gravité : " + signalement.getGravity());
             textViewDescription.setText("Description : " + signalement.getDescription());
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(signalement);
+                }
+            });
         }
     }
 }

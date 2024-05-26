@@ -4,171 +4,60 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/layoutBackground"
+    android:padding="20dp"
     tools:context=".RecapActivity">
 
-    <include layout="@layout/recap_bar"
-        android:id="@+id/ayay"/>
-
-    <FrameLayout
+    <TextView
+        android:id="@+id/problem_type"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        app:layout_constraintBottom_toBottomOf="@+id/bottomNav"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_alignParentBottom="true"
-        app:layout_constraintStart_toStartOf="parent">
-
-    </FrameLayout>
-
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNav"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_alignParentBottom="true"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="wrap_content"
+        android:text="Type de problème"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/primaryText"
+        android:background="@drawable/textview_background"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/menu_bottom" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="16dp" />
 
-    <LinearLayout
-        android:id="@+id/recap"
+    <TextView
+        android:id="@+id/contact_email"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="46dp"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="wrap_content"
+        android:text="Email de contact"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/secondaryText"
+        android:background="@drawable/textview_background"
+        app:layout_constraintTop_toBottomOf="@id/problem_type"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="16dp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Signalement : ID"
-            android:textColor="@color/dark_blue"
-            android:textSize="40dp"
-            android:paddingBottom="16dp"/>
+    <TextView
+        android:id="@+id/gravity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Gravité"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/secondaryText"
+        android:background="@drawable/textview_background"
+        app:layout_constraintTop_toBottomOf="@id/contact_email"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="16dp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Récapitulatif :"
-            android:textSize="18sp"
-            android:padding="10dp"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp"
-            android:background="@drawable/edit_text_background"
-            android:layout_marginBottom="16dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:src="@drawable/ic_image_placeholder"
-                        />
-
-                </LinearLayout>
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Descriptif du signalement"
-                    android:textSize="19dp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Choisir état de traitement :"
-            android:textSize="18sp"
-            android:padding="10dp"/>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp"
-            android:background="@drawable/edit_text_background"
-            android:layout_marginBottom="16dp">
-
-            <RadioGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="En attente"/>
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="En cours"/>
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Traité"/>
-
-            </RadioGroup>
-
-        </LinearLayout>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Contacter :"
-            android:textSize="18sp"
-            android:padding="10dp"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp"
-            android:background="@drawable/edit_text_background"
-            android:layout_marginBottom="16dp">
-
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Message à envoyer pour le réclameur"
-                android:background="@drawable/edit_text_background"
-                android:layout_marginBottom="8dp"/>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Adresse email"
-                android:inputType="textEmailAddress"
-                android:background="@drawable/edit_text_background"
-                android:layout_marginBottom="8dp"/>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Envoyer le message" />
-
-        </LinearLayout>
-    </LinearLayout>
-
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Description"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/secondaryText"
+        android:background="@drawable/textview_background"
+        app:layout_constraintTop_toBottomOf="@id/gravity"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

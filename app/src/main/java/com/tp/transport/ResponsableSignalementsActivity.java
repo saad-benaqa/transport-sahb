@@ -36,7 +36,17 @@ public class ResponsableSignalementsActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         traficInfoList = new ArrayList<>();
-        adapter = new TraficInfoAdapter(traficInfoList);
+        adapter = new TraficInfoAdapter(this, traficInfoList, new TraficInfoAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(TraficInfo traficInfo) {
+                Intent intent = new Intent(ResponsableSignalementsActivity.this, RecapActivity.class);
+                intent.putExtra("problemType", traficInfo.getProblemType());
+                intent.putExtra("contactEmail", traficInfo.getContactEmail());
+                intent.putExtra("gravity", traficInfo.getGravity());
+                intent.putExtra("description", traficInfo.getDescription());
+                startActivity(intent);
+            }
+        });
 
         BottomNavigationView nav = findViewById(R.id.bottomNav);
         nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
