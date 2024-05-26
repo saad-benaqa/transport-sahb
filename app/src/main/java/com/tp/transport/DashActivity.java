@@ -1,14 +1,7 @@
 package com.tp.transport;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewOutlineProvider;
@@ -16,6 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,11 +22,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class DashActivity extends AppCompatActivity {
 
-    private static final String TAG = "DashActivity";
-    private TextView textdenom, textdemail;
-    private ImageView imageView;
     private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
+    private TextView textdenom;
+    private TextView textdemail;
+    private ImageView imageView6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,59 +33,17 @@ public class DashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dash);
 
         mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         textdenom = findViewById(R.id.textdenom);
         textdemail = findViewById(R.id.textdeemail);
-        imageView = findViewById(R.id.imageView6);
-        imageView.setOutlineProvider(ViewOutlineProvider.BACKGROUND);
+        imageView6 = findViewById(R.id.imageView6);
 
-        // Retrieve the Intent that started this activity
-        Intent intent = getIntent();
-        String imageUriString = intent.getStringExtra("image_uri_key");
-        String text = intent.getStringExtra("text_key");
-        //String email = intent.getStringExtra("email_key");
+        // Set the outline provider for the ImageView
+        imageView6.setOutlineProvider(ViewOutlineProvider.BACKGROUND);
 
-        // Set the text in the TextViews from Intent if available
-        /*if (text != null) {
-            textdenom.setText(text);
-        }*/
-
-        /*if (email != null) {
-            textdemail.setText(email);
-        }*/
-
-        // Load the profile image
-        if (imageUriString != null) {
-            loadProfileImage(imageUriString);
-        }
-
-        // Retrieve and display user info from Firestore
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            db.collection("utilisateurs").document(currentUser.getUid()).get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document != null && document.exists()) {
-                                String prenom = document.getString("prenom");
-                                String nom = document.getString("nom");
-                                String email = document.getString("email");
-
-                                if (prenom != null && nom != null) {
-                                    textdenom.setText(prenom + " " + nom);
-                                }
-                                if (email != null) {
-                                    textdemail.setText(email);
-                                }
-                            } else {
-                                Toast.makeText(DashActivity.this, "No user data found", Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            Toast.makeText(DashActivity.this, "Failed to load user data", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-        }
+        // Load user information from Firestore
+        loadUserInfo();
 
         BottomNavigationView nav = findViewById(R.id.bottomNav);
         nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -150,23 +104,65 @@ public class DashActivity extends AppCompatActivity {
         });
     }
 
-    // Method to load the profile image from a URI string
-    private void loadProfileImage(String imageUriString) {
-        Uri imageUri = Uri.parse(imageUriString);
-        try {
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-            imageView.setImageBitmap(bitmap);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Failed to load image", Toast.LENGTH_SHORT).show();
+    private void loadUserInfo() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection("utilisateurs").document(currentUser.getUid()).get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document != null && document.exists()) {
+                                String prenom = document.getString("prenom");
+                                String nom = document.getString("nom");
+                                String email = document.getString("email");
+                                String profileImageUrl = document.getString("profile_image_url");
+
+                                if (prenom != null && nom != null) {
+                                    textdenom.setText(prenom + " " + nom);
+                                }
+                                if (email != null) {
+                                    textdemail.setText(email);
+                                }
+
+                                // Load profile image if URL is available
+                                if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
+                                    Glide.with(DashActivity.this).load(profileImageUrl).into(imageView6);
+                                }
+                            } else {
+                                Toast.makeText(DashActivity.this, "No user data found", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(DashActivity.this, "Failed to load user data", Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
     }
 
-    // Method to navigate to different activities using the service
     private void navigateToPage(String page) {
-        Intent intent = new Intent(this, NavigationService.class);
-        intent.setAction(NavigationService.ACTION_NAVIGATE);
-        intent.putExtra(NavigationService.EXTRA_PAGE, page);
-        startService(intent);
+        Intent intent;
+        switch (page) {
+            case "Profile":
+                intent = new Intent(this, ProfileActivity.class);
+                break;
+            case "Signalements":
+                intent = new Intent(this, SignalementActivity.class);
+                break;
+            case "Trafic":
+                intent = new Intent(this, TraficInfoActivity.class);
+                break;
+            case "Responsable":
+                intent = new Intent(this, EspResActivity.class);
+                break;
+            case "Logout":
+                intent = new Intent(this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+                return;
+            default:
+                throw new IllegalArgumentException("Unknown page: " + page);
+        }
+        startActivity(intent);
     }
 }

@@ -30,6 +30,7 @@ android {
 }
 
 dependencies {
+    //noinspection GradleCompatible,GradleCompatible,GradleCompatible,GradleCompatible
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
@@ -39,9 +40,9 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
     implementation("com.mikhaellopez:circularimageview:4.3.1")
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
     implementation ("com.google.android.gms:play-services-location:18.0.0")
-    // Firebase BOM
-    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
 
     // Firebase dependencies
     implementation("com.google.firebase:firebase-auth")

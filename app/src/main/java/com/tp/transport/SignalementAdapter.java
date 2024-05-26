@@ -8,16 +8,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.tp.transport.GererSignalement;
-
 import java.util.List;
 
 public class SignalementAdapter extends RecyclerView.Adapter<SignalementAdapter.SignalementViewHolder> {
 
     private final List<GererSignalement> signalementList;
+    private final OnItemClickListener listener;
 
-    public SignalementAdapter(List<GererSignalement> signalementList) {
+    public interface OnItemClickListener {
+        void onItemClick(GererSignalement signalement);
+    }
+
+    public SignalementAdapter(List<GererSignalement> signalementList, OnItemClickListener listener) {
         this.signalementList = signalementList;
+        this.listener = listener;
     }
 
     @NonNull
@@ -30,7 +34,7 @@ public class SignalementAdapter extends RecyclerView.Adapter<SignalementAdapter.
     @Override
     public void onBindViewHolder(@NonNull SignalementViewHolder holder, int position) {
         GererSignalement signalement = signalementList.get(position);
-        holder.bind(signalement);
+        holder.bind(signalement, listener);
     }
 
     @Override
@@ -54,11 +58,13 @@ public class SignalementAdapter extends RecyclerView.Adapter<SignalementAdapter.
         }
 
         @SuppressLint("SetTextI18n")
-        public void bind(GererSignalement signalement) {
+        public void bind(GererSignalement signalement, OnItemClickListener listener) {
             textViewProblemType.setText("Type de problème : " + signalement.getProblemType());
             textViewContactEmail.setText("Email de contact : " + signalement.getContactEmail());
             textViewGravity.setText("Gravité : " + signalement.getGravity());
             textViewDescription.setText("Description : " + signalement.getDescription());
+
+            itemView.setOnClickListener(v -> listener.onItemClick(signalement));
         }
     }
 }

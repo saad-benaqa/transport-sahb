@@ -1,8 +1,12 @@
 package com.tp.transport;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +15,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,15 +39,20 @@ public class SignalementActivity extends AppCompatActivity {
     private ImageView retourButton;
     private Button signalerButton;
 
+    private static final int REQUEST_CALENDAR_PERMISSIONS = 100;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signalements);
 
+        // Request calendar permissions
+        requestCalendarPermissions();
+
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         signalementList = new ArrayList<>();
-        adapter = new SignalementAdapter(signalementList);
+        adapter = new SignalementAdapter(signalementList, this::addNoteToCalendar);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerViewSignalements);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -58,14 +69,15 @@ public class SignalementActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Intent intent;
-                if (item.getItemId() == R.id.nav_signale) {
+                int itemId = item.getItemId();
+                if (itemId == R.id.nav_signale) {
                     // Current activity, no need to navigate
                     return true;
-                } else if (item.getItemId() == R.id.nav_home) {
+                } else if (itemId == R.id.nav_home) {
                     intent = new Intent(SignalementActivity.this, MainActivity.class);
                     startActivity(intent);
                     return true;
-                } else if (item.getItemId() == R.id.nav_res) {
+                } else if (itemId == R.id.nav_res) {
                     intent = new Intent(SignalementActivity.this, EspResActivity.class);
                     startActivity(intent);
                     return true;
@@ -74,20 +86,71 @@ public class SignalementActivity extends AppCompatActivity {
             }
         });
 
-        signalerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SignalementActivity.this, SignalerActivity.class);
-                startActivity(intent);
-            }
+        signalerButton.setOnClickListener(v -> {
+            Intent intent = new Intent(SignalementActivity.this, SignalerActivity.class);
+            startActivity(intent);
         });
 
-        retourButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
+        retourButton.setOnClickListener(v -> finish());
+    }
+
+    private void requestCalendarPermissions() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{
+                    Manifest.permission.READ_CALENDAR,
+                    Manifest.permission.WRITE_CALENDAR
+            }, REQUEST_CALENDAR_PERMISSIONS);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CALENDAR_PERMISSIONS) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                // Permissions granted
+            } else {
+                Toast.makeText(this, "Calendar permissions are required to add events.", Toast.LENGTH_SHORT).show();
             }
-        });
+        }
+    }
+
+    private boolean isCalendarAvailable() {
+        Cursor cursor = null;
+        try {
+            cursor = getContentResolver().query(
+                    CalendarContract.Calendars.CONTENT_URI,
+                    new String[]{CalendarContract.Calendars._ID, CalendarContract.Calendars.CALENDAR_DISPLAY_NAME},
+                    null,
+                    null,
+                    null
+            );
+            return (cursor != null && cursor.getCount() > 0);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+    private void addNoteToCalendar(GererSignalement signalement) {
+        if (isCalendarAvailable()) {
+            Intent intent = new Intent(Intent.ACTION_INSERT)
+                    .setData(CalendarContract.Events.CONTENT_URI)
+                    .putExtra(CalendarContract.Events.TITLE, "Signalement: " + signalement.getProblemType())
+                    .putExtra(CalendarContract.Events.DESCRIPTION, signalement.getDescription())
+                    .putExtra(CalendarContract.Events.EVENT_LOCATION, signalement.getContactEmail())
+                    .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
+
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "No calendar app found", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(this, "No calendar synchronized with the device yet. Please set up a calendar account.", Toast.LENGTH_LONG).show();
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -111,7 +174,6 @@ public class SignalementActivity extends AppCompatActivity {
                         }
                     });
         } else {
-            // User not authenticated
             Toast.makeText(SignalementActivity.this, "Utilisateur non authentifié", Toast.LENGTH_SHORT).show();
         }
     }
