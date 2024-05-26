@@ -43,18 +43,19 @@ dependencies {
     implementation ("com.github.bumptech.glide:glide:4.12.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
     implementation ("com.google.android.gms:play-services-location:18.0.0")
-
-    // Firebase dependencies
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-firestore")
     implementation ("com.google.firebase:firebase-auth:23.0.0")
     implementation ("com.google.firebase:firebase-storage:21.0.0")
     implementation ("com.github.bumptech.glide:glide:4.12.0")
-    //noinspection GradleCompatible
     implementation("com.android.support:cardview-v7:25.3.1")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
-
+    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
 
 
     testImplementation("junit:junit:4.13.2")
