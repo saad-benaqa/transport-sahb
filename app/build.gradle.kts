@@ -39,7 +39,7 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
     implementation("com.mikhaellopez:circularimageview:4.3.1")
-
+    implementation ("com.google.android.gms:play-services-location:18.0.0")
     // Firebase BOM
     implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
 
