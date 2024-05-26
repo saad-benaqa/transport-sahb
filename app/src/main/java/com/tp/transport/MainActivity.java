@@ -132,14 +132,4 @@ public class MainActivity extends AppCompatActivity {
         map.onResume();
 
     }
-
-
-
-
-
-
-
-
-
-
 }

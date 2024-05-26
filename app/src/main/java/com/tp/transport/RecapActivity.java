@@ -1,49 +1,35 @@
 package com.tp.transport;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
-import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class RecapActivity extends AppCompatActivity {
 
-    ImageView backrecap;
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recap);
-        BottomNavigationView nav = findViewById(R.id.bottomNav);
-        nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (item.getItemId()==R.id.nav_signale){
-                    Intent intent = new Intent(RecapActivity.this, SignalementActivity.class);
-                    startActivity(intent);
-                    return true;
-                }else if(item.getItemId()==R.id.nav_home) {
-                    Intent intent = new Intent(RecapActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    return true;
-                }else if(item.getItemId()==R.id.nav_res) {
-                    Intent intent = new Intent(RecapActivity.this, EspResActivity.class);
-                    startActivity(intent);
-                    return true;
-                }
 
+        TextView textViewProblemType = findViewById(R.id.problem_type);
+        TextView textViewContactEmail = findViewById(R.id.contact_email);
+        TextView textViewGravity = findViewById(R.id.gravity);
+        TextView textViewDescription = findViewById(R.id.description);
 
-                return false;
-            }
-        });
+        // Get the Intent that started this activity and extract the string
+        Intent intent = getIntent();
+        String problemType = intent.getStringExtra("problemType");
+        String contactEmail = intent.getStringExtra("contactEmail");
+        String gravity = intent.getStringExtra("gravity");
+        String description = intent.getStringExtra("description");
 
-        backrecap = findViewById(R.id.backrecap);
-
-
+        // Set the received data to the TextViews
+        textViewProblemType.setText("Type de problème : " + problemType);
+        textViewContactEmail.setText("Email de contact : " + contactEmail);
+        textViewGravity.setText("Gravité : " + gravity);
+        textViewDescription.setText("Description : " + description);
     }
 }

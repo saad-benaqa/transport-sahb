@@ -42,9 +42,7 @@ dependencies {
     implementation("com.mikhaellopez:circularimageview:4.3.1")
     implementation ("com.github.bumptech.glide:glide:4.12.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
-
-    // Firebase BOM
-    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
+    implementation ("com.google.android.gms:play-services-location:18.0.0")
 
     // Firebase dependencies
     implementation("com.google.firebase:firebase-auth")

@@ -32,6 +32,10 @@
     <color name="black_overlay">#66000000</color>
 
     <color name="menu_icon_color">#FF4081</color>
+    <color name="layoutBackground">#F5F5F5</color>
+    <color name="primaryText">#212121</color>
+    <color name="secondaryText">#757575</color>
+    <color name="border">#BDBDBD</color>
 
 
 
