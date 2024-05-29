@@ -45,6 +45,9 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
     implementation("com.mikhaellopez:circularimageview:4.3.1")
+
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
+
     implementation("com.github.bumptech.glide:glide:4.12.0")
     implementation("androidx.activity:activity:1.9.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")

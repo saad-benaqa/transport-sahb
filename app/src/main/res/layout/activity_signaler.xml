@@ -241,6 +241,7 @@
                 android:text="Import Photos"
                 android:textColor="@android:color/white" />
 
+
             <!-- Accept Terms Checkbox -->
             <CheckBox
                 android:id="@+id/accept_terms_checkbox"
@@ -249,7 +250,14 @@
                 android:padding="16dp"
                 android:text="I certify the authenticity of the information provided."
                 android:textColor="@android:color/black"
-                android:textSize="16sp" />
+
+                android:textSize="16sp"
+                android:padding="16dp" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewPhotos"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="16dp"/>
 
             <!-- Submit Button -->
             <Button
@@ -263,5 +271,7 @@
                 android:textSize="20sp" />
 
         </LinearLayout>
+
     </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
