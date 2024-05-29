@@ -247,15 +247,16 @@
                 android:id="@+id/accept_terms_checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="16dp"
                 android:text="I certify the authenticity of the information provided."
                 android:textColor="@android:color/black"
-                android:textSize="16sp"
-                android:padding="16dp" />
+                android:textSize="16sp" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewPhotos"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="16dp"/>
+                android:layout_margin="16dp" />
 
             <!-- Submit Button -->
             <Button

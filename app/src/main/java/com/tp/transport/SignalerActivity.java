@@ -62,7 +62,7 @@ public class SignalerActivity extends AppCompatActivity {
 
     private static final String TAG = "SignalerActivity";
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-
+    private final List<Uri> photoUris = new ArrayList<>();
     private EditText editTextDate, editTextDescription, editTextCity, editTextZipcode, editTextStreet, editTextCustomProblemType;
     private Spinner spinnerProblemType, spinnerGravity;
     private FusedLocationProviderClient fusedLocationClient;
@@ -71,7 +71,6 @@ public class SignalerActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private Calendar calendar;
-    private final List<Uri> photoUris = new ArrayList<>();
     private RecyclerView recyclerViewPhotos;
     private PhotosAdapter photosAdapter;
     private FirebaseStorage storage;
