@@ -115,7 +115,6 @@ public class SignalerActivity extends AppCompatActivity {
         });
 
 
-
         // Populate the spinner with suggested problem types
         Log.d(TAG, "onCreate: Populating spinner with suggested problem types");
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, suggestedProblemTypes);

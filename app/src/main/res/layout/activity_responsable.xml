@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:background="@drawable/res"
     android:gravity="center_horizontal"
+    android:orientation="vertical"
     tools:context=".ResponsableActivity">
 
     <include
-        layout="@layout/resp_bar"
         android:id="@+id/included_res_bar"
+        layout="@layout/resp_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -28,27 +28,27 @@
         android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_marginTop="0dp"
-        android:textColor="@color/white"
         android:backgroundTint="@color/purple"
         android:text="Modifier photo"
+        android:textColor="@color/white"
         android:textSize="18sp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:text="Responsable : Alex Doubl"
-        android:textStyle="bold"
         android:textColor="#37444A"
         android:textSize="24sp"
-        android:layout_marginTop="30dp"/>
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
         android:text="ID Res : xxxxxxxxxxxx"
         android:textColor="#000000"
-        android:textSize="18sp"
-        android:layout_marginBottom="30dp"/>
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/personalInfoButton"
@@ -61,8 +61,8 @@
     <Button
         android:id="@+id/reportButton"
         android:layout_width="340dp"
-        android:layout_marginTop="10dp"
         android:layout_height="60dp"
+        android:layout_marginTop="10dp"
         android:backgroundTint="@color/purple"
         android:text="Signalements Courants"
         android:textSize="18sp" />
@@ -71,8 +71,8 @@
     <Button
         android:id="@+id/userModeButton"
         android:layout_width="340dp"
-        android:layout_marginTop="10dp"
         android:layout_height="60dp"
+        android:layout_marginTop="10dp"
         android:backgroundTint="@color/purple"
         android:text="Passer au mode utilisateur"
         android:textSize="18sp" />
@@ -84,9 +84,9 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
             app:layout_constraintBottom_toBottomOf="@+id/bottomNav"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_alignParentBottom="true"
             app:layout_constraintStart_toStartOf="parent">
 
         </FrameLayout>

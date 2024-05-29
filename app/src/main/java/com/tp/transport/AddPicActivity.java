@@ -15,12 +15,11 @@ import androidx.annotation.Nullable;
 
 public class AddPicActivity extends Activity {
 
+    private static final int PICK_IMAGE_REQUEST = 1;
+    private static final int REQUEST_IMAGE_CAPTURE = 2; // Changer le numéro de requête pour la capture d'image
     private Button pickImageButton;
     private Button btnCapture;
     private ImageView back111;
-
-    private static final int PICK_IMAGE_REQUEST = 1;
-    private static final int REQUEST_IMAGE_CAPTURE = 2; // Changer le numéro de requête pour la capture d'image
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

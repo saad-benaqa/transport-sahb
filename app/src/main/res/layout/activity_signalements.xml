@@ -5,19 +5,18 @@
     android:background="@color/background_color">
 
     <include
-        layout="@layout/signalements_bar"
         android:id="@+id/bar"
+        layout="@layout/signalements_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"/>
+        android:layout_alignParentTop="true" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:background="@color/navigation_bar_color"
-        android:elevation="4dp">
-    </FrameLayout>
+        android:elevation="4dp"></FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
@@ -25,8 +24,8 @@
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:background="@color/navigation_bar_color"
-        app:menu="@menu/menu_bottom"
-        android:elevation="8dp" />
+        android:elevation="8dp"
+        app:menu="@menu/menu_bottom" />
 
     <RelativeLayout
         android:id="@+id/laylay"
@@ -41,10 +40,10 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:padding="8dp"
+            android:background="@color/recycler_background"
             android:clipToPadding="false"
-            android:scrollbars="vertical"
-            android:background="@color/recycler_background"/>
+            android:padding="8dp"
+            android:scrollbars="vertical" />
 
         <Button
             android:id="@+id/buttonSignaler"
@@ -55,13 +54,13 @@
             android:layout_marginBottom="80dp"
             android:backgroundTint="@color/button_color"
             android:elevation="4dp"
+            android:fontFamily="sans-serif-medium"
             android:paddingStart="20dp"
             android:paddingTop="10dp"
             android:paddingEnd="20dp"
             android:paddingBottom="10dp"
             android:text="Signaler"
             android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:fontFamily="sans-serif-medium"/>
+            android:textSize="18sp" />
     </RelativeLayout>
 </RelativeLayout>

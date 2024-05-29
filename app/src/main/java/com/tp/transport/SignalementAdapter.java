@@ -5,8 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.List;
 
 public class SignalementAdapter extends RecyclerView.Adapter<SignalementAdapter.SignalementViewHolder> {
@@ -34,6 +36,10 @@ public class SignalementAdapter extends RecyclerView.Adapter<SignalementAdapter.
     @Override
     public int getItemCount() {
         return signalementList.size();
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(GererSignalement signalement);
     }
 
     public static class SignalementViewHolder extends RecyclerView.ViewHolder {
@@ -66,9 +72,5 @@ public class SignalementAdapter extends RecyclerView.Adapter<SignalementAdapter.
 
             itemView.setOnClickListener(v -> listener.onItemClick(signalement));
         }
-    }
-
-    public interface OnItemClickListener {
-        void onItemClick(GererSignalement signalement);
     }
 }

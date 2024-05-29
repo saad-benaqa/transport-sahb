@@ -12,52 +12,52 @@
         android:id="@+id/problem_type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/textview_background"
+        android:padding="16dp"
         android:text="Type de problème"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/primaryText"
-        android:background="@drawable/textview_background"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:padding="16dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/contact_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/textview_background"
+        android:padding="16dp"
         android:text="Email de contact"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/secondaryText"
-        android:background="@drawable/textview_background"
-        app:layout_constraintTop_toBottomOf="@id/problem_type"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:padding="16dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/problem_type" />
 
     <TextView
         android:id="@+id/gravity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/textview_background"
+        android:padding="16dp"
         android:text="Gravité"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/secondaryText"
-        android:background="@drawable/textview_background"
-        app:layout_constraintTop_toBottomOf="@id/contact_email"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:padding="16dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/contact_email" />
 
     <TextView
         android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/textview_background"
+        android:padding="16dp"
         android:text="Description"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/secondaryText"
-        android:background="@drawable/textview_background"
-        app:layout_constraintTop_toBottomOf="@id/gravity"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:padding="16dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/gravity" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
