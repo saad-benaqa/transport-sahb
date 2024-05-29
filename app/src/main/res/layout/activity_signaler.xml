@@ -103,16 +103,8 @@
                     android:inputType="text"
                     android:textColor="@android:color/black"
                     android:textSize="20sp" />
+
                 <!-- Use My Location Button -->
-
-            </LinearLayout>
-
-            <!-- Building Number Input -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="15dp">
                 <Button
                     android:id="@+id/use_my_location_button"
                     android:layout_width="wrap_content"
@@ -120,10 +112,8 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="16dp"
                     android:background="@color/darkdark_blue"
-                    android:onClick="onUseMyLocationButtonClick"
                     android:text="Use My Location"
                     android:textColor="@android:color/white" />
-
             </LinearLayout>
 
             <!-- Date Input -->
@@ -198,6 +188,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_background"
+                    android:minHeight="48dp"
                     android:textColor="@android:color/black"
                     android:textSize="20sp" />
 
@@ -235,6 +226,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_background"
+                    android:minHeight="48dp"
                     android:textColor="@android:color/black"
                     android:textSize="20sp" />
 

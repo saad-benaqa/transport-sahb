@@ -34,7 +34,7 @@ public class SignLog extends AppCompatActivity {
         });
 
         LinearLayout utilisateurLayout = findViewById(R.id.utilisateur);
-        LinearLayout responsableLayout = findViewById(R.id.Responsable);
+        LinearLayout responsableLayout = findViewById(R.id.responsable);
 
         utilisateurLayout.setOnClickListener(new View.OnClickListener() {
             @Override
