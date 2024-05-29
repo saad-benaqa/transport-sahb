@@ -21,10 +21,10 @@ import com.google.android.material.navigation.NavigationBarView;
 public class ResponsableActivity extends AppCompatActivity {
 
     Button reportButton;
-
     private static final int PICK_IMAGE_REQUEST = 1;
     private ImageView imageView;
     private Button pickImageButton;
+    private Button userModeButton;
 
     ActivityResultLauncher<Intent> resultLauncher;
     ImageView back;
@@ -34,69 +34,59 @@ public class ResponsableActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_responsable);
 
-
-
         BottomNavigationView nav = findViewById(R.id.bottomNav);
         nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (item.getItemId()==R.id.nav_signale){
+                if (item.getItemId() == R.id.nav_signale) {
                     Intent intent = new Intent(ResponsableActivity.this, SignalementActivity.class);
                     startActivity(intent);
                     return true;
-                }else if(item.getItemId()==R.id.nav_home) {
+                } else if (item.getItemId() == R.id.nav_home) {
                     Intent intent = new Intent(ResponsableActivity.this, MainActivity.class);
                     startActivity(intent);
                     return true;
-                }else if(item.getItemId()==R.id.nav_res) {
+                } else if (item.getItemId() == R.id.nav_res) {
                     Intent intent = new Intent(ResponsableActivity.this, EspResActivity.class);
                     startActivity(intent);
                     return true;
                 }
-
-
                 return false;
             }
         });
-
 
         pickImageButton = findViewById(R.id.btnPick);
         imageView = findViewById(R.id.imageView);
 
         Button personalInfoButton = findViewById(R.id.personalInfoButton);
-
-
         personalInfoButton.setOnClickListener(v -> {
             String codeConfidentiel = getIntent().getStringExtra("codeConfidentiel");
             Intent intent = new Intent(ResponsableActivity.this, infoResEditActivity.class);
             intent.putExtra("codeConfidentiel", codeConfidentiel);
             startActivity(intent);
-
         });
 
         pickImageButton.setOnClickListener(v -> openGallery());
 
         reportButton = findViewById(R.id.reportButton);
+        reportButton.setOnClickListener(v -> {
+            Intent intent = new Intent(ResponsableActivity.this, ResponsableSignalementsActivity.class);
+            startActivity(intent);
+        });
 
         back = findViewById(R.id.backres);
-        reportButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ResponsableActivity.this, ResponsableSignalementsActivity.class);
-                startActivity(intent);
-            }
+        back.setOnClickListener(v -> {
+            Intent intent = new Intent(ResponsableActivity.this, MainActivity.class);
+            startActivity(intent);
         });
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ResponsableActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
+        // New User Mode Button
+        userModeButton = findViewById(R.id.userModeButton);
+        userModeButton.setOnClickListener(v -> {
+            Intent intent = new Intent(ResponsableActivity.this, LoginActivity.class);
+            startActivity(intent);
         });
-
     }
-
 
     private void openGallery() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -118,5 +108,4 @@ public class ResponsableActivity extends AppCompatActivity {
             }
         }
     }
-
 }

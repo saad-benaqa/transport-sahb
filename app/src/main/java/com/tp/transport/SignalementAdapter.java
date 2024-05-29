@@ -7,17 +7,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.List;
+
 
 public class SignalementAdapter extends RecyclerView.Adapter<SignalementAdapter.SignalementViewHolder> {
 
     private final List<GererSignalement> signalementList;
     private final OnItemClickListener listener;
-
-    public interface OnItemClickListener {
-        void onItemClick(GererSignalement signalement);
-    }
 
     public SignalementAdapter(List<GererSignalement> signalementList, OnItemClickListener listener) {
         this.signalementList = signalementList;
@@ -33,8 +29,7 @@ public class SignalementAdapter extends RecyclerView.Adapter<SignalementAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull SignalementViewHolder holder, int position) {
-        GererSignalement signalement = signalementList.get(position);
-        holder.bind(signalement, listener);
+        holder.bind(signalementList.get(position), listener);
     }
 
     @Override
@@ -48,6 +43,8 @@ public class SignalementAdapter extends RecyclerView.Adapter<SignalementAdapter.
         private final TextView textViewContactEmail;
         private final TextView textViewGravity;
         private final TextView textViewDescription;
+        private final TextView textViewLocation;
+        private final TextView textViewDate;
 
         public SignalementViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -55,16 +52,24 @@ public class SignalementAdapter extends RecyclerView.Adapter<SignalementAdapter.
             textViewContactEmail = itemView.findViewById(R.id.contact_email);
             textViewGravity = itemView.findViewById(R.id.gravity);
             textViewDescription = itemView.findViewById(R.id.description);
+            textViewLocation = itemView.findViewById(R.id.location);
+            textViewDate = itemView.findViewById(R.id.date);
         }
 
         @SuppressLint("SetTextI18n")
         public void bind(GererSignalement signalement, OnItemClickListener listener) {
             textViewProblemType.setText("Type de problème : " + signalement.getProblemType());
-            textViewContactEmail.setText("Email de contact : " + signalement.getContactEmail());
+            textViewContactEmail.setText("Email de contact : " + signalement.getContactEmail()); // Bind email data
             textViewGravity.setText("Gravité : " + signalement.getGravity());
             textViewDescription.setText("Description : " + signalement.getDescription());
+            textViewLocation.setText("Location : " + signalement.getLocation());
+            textViewDate.setText("Date : " + signalement.getDate());
 
             itemView.setOnClickListener(v -> listener.onItemClick(signalement));
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(GererSignalement signalement);
     }
 }

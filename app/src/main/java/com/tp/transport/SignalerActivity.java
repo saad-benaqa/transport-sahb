@@ -75,110 +75,26 @@ public class SignalerActivity extends AppCompatActivity {
                 "Autre" // Add an "Other" option
         };
 
+
+
         // Populate the spinner with suggested problem types
+        Log.d(TAG, "onCreate: Populating spinner with suggested problem types");
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, suggestedProblemTypes);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerProblemType.setAdapter(adapter);
 
-        // Initialize gravity levels
         Log.d(TAG, "onCreate: Initializing gravity levels");
         String[] gravityLevels = {"Faible", "Moyen", "Élevé"};
 
-        // Populate the spinner with gravity levels
         ArrayAdapter<String> gravityAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, gravityLevels);
         gravityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerGravity.setAdapter(gravityAdapter);
 
-        // Set up BottomNavigationView
-        /*Log.d(TAG, "onCreate: Setting up BottomNavigationView");
-        BottomNavigationView nav = findViewById(R.id.bottomNav);
-        if (nav != null) {
-            nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    int itemId = item.getItemId();
-                    Intent intent;
-
-                    if (itemId == R.id.nav_signale) {
-                        Log.d(TAG, "onNavigationItemSelected: Navigating to SignalementActivity");
-                        intent = new Intent(SignalerActivity.this, SignalementActivity.class);
-                        startActivity(intent);
-                        return true;
-                    } else if (itemId == R.id.nav_home) {
-                        Log.d(TAG, "onNavigationItemSelected: Navigating to MainActivity");
-                        intent = new Intent(SignalerActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        return true;
-                    } else if (itemId == R.id.nav_res) {
-                        Log.d(TAG, "onNavigationItemSelected: Navigating to EspResActivity");
-                        intent = new Intent(SignalerActivity.this, EspResActivity.class);
-                        startActivity(intent);
-                        return true;
-                    }
-                    return false;
-                }
-            });
-        } else {
-            Log.d(TAG, "onNavigationItemSeazssqSqsQSlected: Navigating to MainActivity");
-        }
-        nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int itemId = item.getItemId();
-                Intent intent;
-
-                if (itemId == R.id.nav_signale) {
-                    Log.d(TAG, "onNavigationItemSelected: Navigating to SignalementActivity");
-                    intent = new Intent(SignalerActivity.this, SignalementActivity.class);
-                    startActivity(intent);
-                    return true;
-                } else if (itemId == R.id.nav_home) {
-                    Log.d(TAG, "onNavigationItemSelected: Navigating to MainActivity");
-                    intent = new Intent(SignalerActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    return true;
-                } else if (itemId == R.id.nav_res) {
-                    Log.d(TAG, "onNavigationItemSelected: Navigating to EspResActivity");
-                    intent = new Intent(SignalerActivity.this, EspResActivity.class);
-                    startActivity(intent);
-                    return true;
-                }
-                return false;
-            }
-        });*/
-
-        // Set up back button
-        Log.d(TAG, "onCreate: Setting up back button");
-        ImageView back = findViewById(R.id.back111);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: Back button clicked, navigating to SignalementActivity");
-                Intent intent = new Intent(SignalerActivity.this, SignalementActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        // Set up import photo button
-        Log.d(TAG, "onCreate: Setting up import photo button");
-        Button import_photo_button = findViewById(R.id.import_photo_button);
-        import_photo_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: Import photo button clicked, navigating to AddPicActivity");
-                Intent intent = new Intent(SignalerActivity.this, AddPicActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        // Handle visibility of custom problem type EditText
-        Log.d(TAG, "onCreate: Setting up spinnerProblemType item selection listener");
         spinnerProblemType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedType = (String) parent.getItemAtPosition(position);
-                Log.d(TAG, "onItemSelected: Selected problem type: " + selectedType);
-                if ("Autre".equals(selectedType)) {
+                Log.d(TAG, "onItemSelected: Position - " + position);
+                if (position == parent.getCount() - 1) {
                     editTextCustomProblemType.setVisibility(View.VISIBLE);
                 } else {
                     editTextCustomProblemType.setVisibility(View.GONE);
@@ -187,18 +103,21 @@ public class SignalerActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                editTextCustomProblemType.setVisibility(View.GONE);
+                Log.d(TAG, "onNothingSelected");
             }
         });
 
-        // Set up date picker for date EditText
-        Log.d(TAG, "onCreate: Setting up date picker for date EditText");
         calendar = Calendar.getInstance();
-        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+        // Initialize date picker dialog
+        Log.d(TAG, "onCreate: Initializing date picker dialog");
+        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
             @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Log.d(TAG, "onDateSet: " + dayOfMonth + "-" + monthOfYear + "-" + year);
                 calendar.set(Calendar.YEAR, year);
-                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.MONTH, monthOfYear);
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 updateLabel();
             }
@@ -207,32 +126,57 @@ public class SignalerActivity extends AppCompatActivity {
         editTextDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick: Date EditText clicked, showing DatePickerDialog");
-                new DatePickerDialog(SignalerActivity.this, date, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+                new DatePickerDialog(SignalerActivity.this, date, calendar
+                        .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
 
-        // Set up submit button
-        Log.d(TAG, "onCreate: Setting up submit button");
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: Submit button clicked, calling submitReport");
-                submitReport();
-            }
+        // Initialize back button
+        Log.d(TAG, "onCreate: Initializing back button");
+        ImageView backButton = findViewById(R.id.back111);
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(SignalerActivity.this, SignalementActivity.class);
+            startActivity(intent);
         });
+
+        submitButton.setOnClickListener(v -> {
+            Log.d(TAG, "submitButton: Clicked");
+            submitReport();
+        });
+
+        BottomNavigationView nav = findViewById(R.id.bottomNav);
+        /*nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Log.d(TAG, "onNavigationItemSelected: " + item.getItemId());
+                Intent intent;
+                int itemId = item.getItemId();
+                if (itemId == R.id.nav_signale) {
+                    return true;
+                } else if (itemId == R.id.nav_home) {
+                    intent = new Intent(SignalerActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    return true;
+                } else if (itemId == R.id.nav_res) {
+                    intent = new Intent(SignalerActivity.this, EspResActivity.class);
+                    startActivity(intent);
+                    return true;
+                }
+                return false;
+            }
+        });*/
     }
 
     private void updateLabel() {
-        String myFormat = "dd/MM/yyyy"; // In which you need to display the date
+        String myFormat = "dd/MM/yy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
         editTextDate.setText(sdf.format(calendar.getTime()));
-        Log.d(TAG, "updateLabel: Date set to " + sdf.format(calendar.getTime()));
     }
 
-    // Method to handle report submission
     private void submitReport() {
-        Log.d(TAG, "submitReport: Preparing to submit report");
+        Log.d(TAG, "submitReport: Started");
         String problemType;
         if ("Autre".equals(spinnerProblemType.getSelectedItem().toString())) {
             problemType = editTextCustomProblemType.getText().toString().trim();
@@ -242,22 +186,19 @@ public class SignalerActivity extends AppCompatActivity {
         String date = editTextDate.getText().toString().trim();
         String gravity = spinnerGravity.getSelectedItem().toString().trim();
         String description = editTextDescription.getText().toString().trim();
+        String city = editTextCity.getText().toString().trim();
+        String zipcode = editTextZipcode.getText().toString().trim();
+        String street = editTextStreet.getText().toString().trim();
 
-        if (problemType.isEmpty() || date.isEmpty() || gravity.isEmpty() || description.isEmpty()) {
-            Log.w(TAG, "submitReport: Missing required fields");
+        if (problemType.isEmpty() || date.isEmpty() || gravity.isEmpty() || description.isEmpty() || city.isEmpty() || zipcode.isEmpty() || street.isEmpty()) {
+            Log.d(TAG, "submitReport: Validation failed - fields are empty");
             Toast.makeText(this, "Veuillez remplir tous les champs", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (!acceptTermsCheckbox.isChecked()) {
-            Log.w(TAG, "submitReport: Terms and conditions not accepted");
+            Log.d(TAG, "submitReport: Validation failed - terms not accepted");
             Toast.makeText(this, "Veuillez accepter les termes et conditions", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (mAuth == null || db == null) {
-            Log.e(TAG, "submitReport: Firebase services are not initialized");
-            Toast.makeText(this, "Firebase services are not initialized.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -266,34 +207,35 @@ public class SignalerActivity extends AppCompatActivity {
             String userId = user.getUid();
             long timestamp = System.currentTimeMillis();
 
+
+            String email = user.getEmail();
+
             Map<String, Object> signalement = new HashMap<>();
             signalement.put("userId", userId);
             signalement.put("problemType", problemType);
             signalement.put("date", date);
             signalement.put("gravity", gravity);
             signalement.put("description", description);
+            signalement.put("city", city);
+            signalement.put("zipcode", zipcode);
+            signalement.put("street", street);
             signalement.put("timestamp", timestamp);
+            signalement.put("contactEmail", email);
 
-            Log.d(TAG, "submitReport: Adding signalement to Firestore");
             db.collection("signalements")
                     .add(signalement)
                     .addOnSuccessListener(documentReference -> {
-                        Log.d(TAG, "submitReport: DocumentSnapshot written with ID: " + documentReference.getId());
+                        Log.d(TAG, "submitReport: Signalement added");
                         Toast.makeText(SignalerActivity.this, "Signalement ajouté", Toast.LENGTH_SHORT).show();
-                        finish(); // Close the activity after adding the signalement
+                        finish();
                     })
                     .addOnFailureListener(e -> {
-                        Log.e(TAG, "submitReport: Error adding document", e);
+                        Log.d(TAG, "submitReport: Error adding signalement", e);
                         Toast.makeText(SignalerActivity.this, "Erreur lors de l'ajout du signalement", Toast.LENGTH_SHORT).show();
                     });
         } else {
-            Log.w(TAG, "submitReport: User not authenticated");
-            Toast.makeText(this, "User not authenticated.", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "submitReport: User not authenticated");
+            Toast.makeText(this, "Utilisateur non authentifié.", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    public void onImportPhotoButtonClick(View view) {
-        Log.d(TAG, "onImportPhotoButtonClick: Import photo button clicked");
-        // Logic for importing photo if needed
     }
 }

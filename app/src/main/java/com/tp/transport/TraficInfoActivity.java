@@ -41,6 +41,11 @@ public class TraficInfoActivity extends AppCompatActivity {
                 intent.putExtra("contactEmail", traficInfo.getContactEmail());
                 intent.putExtra("gravity", traficInfo.getGravity());
                 intent.putExtra("description", traficInfo.getDescription());
+                intent.putExtra("problemType", traficInfo.getProblemType());
+                intent.putExtra("contactEmail", traficInfo.getContactEmail());
+                intent.putExtra("gravity", traficInfo.getGravity());
+                intent.putExtra("description", traficInfo.getDescription());
+
                 startActivity(intent);
             }
         });
