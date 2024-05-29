@@ -13,3 +13,11 @@
 .externalNativeBuild
 .cxx
 local.properties
+.idea/deploymentTargetSelector.xml
+gradle/.tmp/
+gradle/android/
+gradle/caches/
+gradle/daemon/
+gradle/jdks/
+gradle/native/
+gradle/wrapper/dists/
