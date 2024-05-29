@@ -7,7 +7,7 @@
     android:background="@drawable/gradient_blue_purple"
     android:layout_marginTop="18dp">
 
-    <!-- Titre du signalement -->
+    <!-- Email de contact -->
     <TextView
         android:id="@+id/contact_email"
         android:layout_width="match_parent"
@@ -65,6 +65,24 @@
             android:textColor="@android:color/white"
             android:textSize="18sp" />
     </LinearLayout>
+
+    <!-- Localisation du signalement -->
+    <TextView
+        android:id="@+id/location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
+
+    <!-- Date du signalement -->
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
 
     <!-- Image associée au signalement -->
     <ImageView

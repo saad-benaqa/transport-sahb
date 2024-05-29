@@ -140,7 +140,7 @@ public class SignalementActivity extends AppCompatActivity {
                     .setData(CalendarContract.Events.CONTENT_URI)
                     .putExtra(CalendarContract.Events.TITLE, "Signalement: " + signalement.getProblemType())
                     .putExtra(CalendarContract.Events.DESCRIPTION, signalement.getDescription())
-                    .putExtra(CalendarContract.Events.EVENT_LOCATION, signalement.getContactEmail())
+                    .putExtra(CalendarContract.Events.EVENT_LOCATION, signalement.getLocation())
                     .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
 
             if (intent.resolveActivity(getPackageManager()) != null) {

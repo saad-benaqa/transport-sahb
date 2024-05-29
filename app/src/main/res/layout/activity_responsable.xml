@@ -9,18 +9,11 @@
     android:gravity="center_horizontal"
     tools:context=".ResponsableActivity">
 
-
-
-
-
     <include
         layout="@layout/resp_bar"
         android:id="@+id/included_res_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
-
-
 
     <ImageView
         android:id="@+id/imageView"
@@ -39,6 +32,7 @@
         android:backgroundTint="@color/purple"
         android:text="Modifier photo"
         android:textSize="18sp" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -56,7 +50,6 @@
         android:textSize="18sp"
         android:layout_marginBottom="30dp"/>
 
-
     <Button
         android:id="@+id/personalInfoButton"
         android:layout_width="340dp"
@@ -64,8 +57,6 @@
         android:backgroundTint="@color/purple"
         android:text="Informations Personnelles"
         android:textSize="18sp" />
-
-
 
     <Button
         android:id="@+id/reportButton"
@@ -76,6 +67,15 @@
         android:text="Signalements Courants"
         android:textSize="18sp" />
 
+    <!-- New Button for User Mode -->
+    <Button
+        android:id="@+id/userModeButton"
+        android:layout_width="340dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="60dp"
+        android:backgroundTint="@color/purple"
+        android:text="Passer au mode utilisateur"
+        android:textSize="18sp" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -91,7 +91,6 @@
 
         </FrameLayout>
 
-
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNav"
             android:layout_width="match_parent"
@@ -102,13 +101,4 @@
             app:layout_constraintStart_toStartOf="parent"
             app:menu="@menu/menu_bottom" />
     </RelativeLayout>
-
-
-
-
-
-
-
 </LinearLayout>
-
-
