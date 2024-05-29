@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
-
 public class SignalementAdapter extends RecyclerView.Adapter<SignalementAdapter.SignalementViewHolder> {
 
     private final List<GererSignalement> signalementList;
