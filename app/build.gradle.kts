@@ -41,6 +41,7 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
     implementation("com.mikhaellopez:circularimageview:4.3.1")
     implementation ("com.github.bumptech.glide:glide:4.12.0")
+    implementation("androidx.activity:activity:1.8.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
     implementation ("com.google.android.gms:play-services-location:18.0.0")
     implementation("com.google.firebase:firebase-auth")
