@@ -1,20 +1,19 @@
 package com.tp.transport;
 
-
-
-import androidx.appcompat.app.AppCompatActivity;
 import static com.tp.transport.AddPicActivity.REQUEST_IMAGE_CAPTURE;
 
-import android.app.AlertDialog;
-
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,46 +26,36 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.osmdroid.util.GeoPoint;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.provider.MediaStore;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 public class SignalerActivity extends AppCompatActivity {
@@ -82,7 +71,7 @@ public class SignalerActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private Calendar calendar;
-    private List<Uri> photoUris = new ArrayList<>();
+    private final List<Uri> photoUris = new ArrayList<>();
     private RecyclerView recyclerViewPhotos;
     private PhotosAdapter photosAdapter;
     private FirebaseStorage storage;
@@ -129,7 +118,6 @@ public class SignalerActivity extends AppCompatActivity {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-
         // Initialize suggested problem types
         Log.d(TAG, "onCreate: Initializing suggested problem types");
         String[] suggestedProblemTypes = {
@@ -140,15 +128,6 @@ public class SignalerActivity extends AppCompatActivity {
                 "Problème pour personnes à mobilité réduite",
                 "Autre" // Add an "Other" option
         };
-        useMyLocationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getLocationPermission();
-                if (locationPermissionGranted) {
-                    getDeviceLocation();
-                }
-            }
-        });
 
         // Populate the spinner with suggested problem types
         Log.d(TAG, "onCreate: Populating spinner with suggested problem types");
@@ -217,8 +196,10 @@ public class SignalerActivity extends AppCompatActivity {
             Log.d(TAG, "submitButton: Clicked");
             submitReport();
         });
+
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+
         pickImageLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -256,6 +237,10 @@ public class SignalerActivity extends AppCompatActivity {
                     }
                 }
         );
+
+        useMyLocationButton.setOnClickListener(v -> {
+            getLocationPermission();
+        });
     }
 
     private void updateLabel() {
@@ -317,6 +302,7 @@ public class SignalerActivity extends AppCompatActivity {
             Toast.makeText(this, "Utilisateur non authentifié.", Toast.LENGTH_SHORT).show();
         }
     }
+
     private void uploadPhotosAndSubmit(Map<String, Object> signalement) {
         if (photoUris.isEmpty()) {
             submitToFirestore(signalement);
@@ -402,6 +388,7 @@ public class SignalerActivity extends AppCompatActivity {
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             locationPermissionGranted = true;
+            getDeviceLocation();
         } else {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
@@ -419,6 +406,7 @@ public class SignalerActivity extends AppCompatActivity {
             if (grantResults.length > 0 &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 locationPermissionGranted = true;
+                getDeviceLocation();
             }
         }
     }

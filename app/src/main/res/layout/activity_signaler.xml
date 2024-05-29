@@ -247,10 +247,8 @@
                 android:id="@+id/accept_terms_checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
                 android:text="I certify the authenticity of the information provided."
                 android:textColor="@android:color/black"
-
                 android:textSize="16sp"
                 android:padding="16dp" />
             <androidx.recyclerview.widget.RecyclerView
