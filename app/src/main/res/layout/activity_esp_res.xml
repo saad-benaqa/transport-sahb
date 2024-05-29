@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
         app:layout_constraintBottom_toBottomOf="@+id/bottomNav"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_alignParentBottom="true"
         app:layout_constraintStart_toStartOf="parent">
 
     </FrameLayout>
@@ -22,16 +22,16 @@
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_alignParentBottom="true"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/menu_bottom" />
 
     <!-- Layout esp_res_bar -->
     <include
-        layout="@layout/esp_res_bar"
         android:id="@+id/included_esp_res_bar"
+        layout="@layout/esp_res_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -78,11 +78,11 @@
                     android:drawableLeft="@drawable/baseline_person_24"
                     android:drawablePadding="8dp"
                     android:hint="le code confidentiel de Responsable*"
-                    android:textSize="16sp"
                     android:inputType="textPassword"
                     android:padding="8dp"
                     android:textColor="@color/black"
-                    android:textColorHighlight="@color/cardview_dark_background" />
+                    android:textColorHighlight="@color/cardview_dark_background"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/champ"
@@ -111,7 +111,6 @@
         </androidx.cardview.widget.CardView>
 
 
-
         <TextView
             android:id="@+id/signupText"
             android:layout_width="wrap_content"
@@ -124,9 +123,7 @@
             android:textSize="14sp" />
 
 
-
     </LinearLayout>
-
 
 
 </RelativeLayout>

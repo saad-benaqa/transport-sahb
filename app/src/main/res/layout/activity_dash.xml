@@ -8,14 +8,12 @@
     tools:context=".DashActivity">
 
 
-
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
         app:layout_constraintBottom_toBottomOf="@+id/bottomNav"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_alignParentBottom="true"
         app:layout_constraintStart_toStartOf="parent">
 
     </FrameLayout>
@@ -23,14 +21,14 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
+        style="@style/NavigationIconStyle"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_alignParentBottom="true"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/menu_bottom"
-        style="@style/NavigationIconStyle" />
+        app:menu="@menu/menu_bottom" />
 
 
     <ScrollView
@@ -40,7 +38,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
 
 
         <LinearLayout
@@ -135,12 +132,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
                 android:layout_marginBottom="16dp"
                 android:clickable="true"
-                android:onClick="onButtonClick"
-                android:focusable="true">
+                android:focusable="true"
+                android:onClick="onButtonClick">
 
                 <ImageView
                     android:id="@+id/imageView11"
@@ -174,21 +171,21 @@
                     app:layout_constraintBottom_toBottomOf="@+id/buttonInformations"
                     app:layout_constraintStart_toStartOf="@+id/buttonInformations"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.521"
-                    />
+                    app:layout_constraintVertical_bias="0.521" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/signalementsLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
                 android:layout_marginBottom="16dp"
                 android:clickable="true"
-                android:onClick="onButtonClick"
-                android:focusable="true">
+                android:focusable="true"
+                android:onClick="onButtonClick">
 
                 <ImageView
                     android:id="@+id/imageView11"
@@ -225,18 +222,18 @@
                     app:layout_constraintVertical_bias="0.521" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/traficsLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
                 android:layout_marginBottom="16dp"
                 android:clickable="true"
-                android:onClick="onButtonClick"
                 android:focusable="true"
-                >
+                android:onClick="onButtonClick">
 
                 <ImageView
                     android:id="@+id/imageView11"
@@ -274,14 +271,15 @@
                     tools:ignore="DuplicateIds" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/EspaceResponsable"
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:layout_height="match_parent">
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="16dp">
 
                 <ImageView
                     android:id="@+id/imageView11"
@@ -295,9 +293,9 @@
 
                 <ImageView
                     android:id="@+id/imageView9"
-                    android:src="@drawable/baseline_engineering_24"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:src="@drawable/baseline_engineering_24"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -319,14 +317,15 @@
                     tools:ignore="DuplicateIds" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_marginStart="32dp"
                 android:id="@+id/logout"
-                android:layout_marginEnd="32dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:layout_height="match_parent">
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="16dp">
 
                 <ImageView
                     android:id="@+id/logout"
@@ -341,8 +340,8 @@
                 <ImageView
                     android:id="@+id/imageView9"
                     android:layout_width="45dp"
-                    android:src="@drawable/baseline_logout_24"
                     android:layout_height="45dp"
+                    android:src="@drawable/baseline_logout_24"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -371,7 +370,6 @@
 
 
     </ScrollView>
-
 
 
 </RelativeLayout>

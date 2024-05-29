@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
     android:id="@+id/Responsable"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/linear_lll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
         android:layout_gravity="top"
         android:orientation="horizontal"
-        android:id="@+id/linear_lll"
+        android:padding="10dp"
         tools:ignore="MissingConstraints">
 
         <ImageView
+            android:id="@+id/backres"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginTop="-5dp"
-            android:id="@+id/backres"
             android:clickable="true"
-            android:onClick="onButtonClick"
+            android:contentDescription="TODO"
             android:focusable="true"
+            android:onClick="onButtonClick"
             android:src="@drawable/baseline_keyboard_backspace_24"
-            tools:ignore="ExtraText"
-            android:contentDescription="TODO" />
+            tools:ignore="ExtraText" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Notifications"
-            android:textSize="22dp"
             android:gravity="center"
-            android:textStyle="bold"
-            android:textColor="@color/dark_blue"/>
+            android:text="Notifications"
+            android:textColor="@color/dark_blue"
+            android:textSize="22dp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
@@ -43,11 +43,10 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.9dp"
+        android:layout_marginTop="49dp"
         android:background="@color/dark_blue"
         android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:layout_marginTop="49dp"/>
-
+        android:paddingRight="8dp" />
 
 
 </RelativeLayout>

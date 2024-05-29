@@ -1,8 +1,8 @@
 package com.tp.transport;
 
 public class NotificationItem {
-    private String title;
-    private String content;
+    private final String title;
+    private final String content;
 
     public NotificationItem(String title, String content) {
         this.title = title;

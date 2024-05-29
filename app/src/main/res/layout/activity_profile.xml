@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:background="@color/light_blue"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
 
-    <include layout="@layout/profile_bar"/>
+    <include layout="@layout/profile_bar" />
 
 
     <ImageView
@@ -17,8 +17,8 @@
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_gravity="center"
-        android:src="@drawable/pdp24"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"
+        android:src="@drawable/pdp24" />
 
     <!-- Button to perform an action -->
     <Button
@@ -27,18 +27,17 @@
         android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_marginTop="0dp"
-        android:textColor="@color/white"
         android:backgroundTint="@color/purple"
         android:text="Modifier photo"
-        android:textSize="18sp"
-         />
+        android:textColor="@color/white"
+        android:textSize="18sp" />
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,83 +47,82 @@
 
 
             <EditText
-                android:layout_width="350dp"
-                android:layout_height="60dp"
                 android:id="@+id/prenom"
-                android:background="@drawable/lavender_border"
+                android:layout_width="350dp"
+                android:layout_height="60dp"
                 android:layout_marginTop="0dp"
-                android:padding="8dp"
+                android:background="@drawable/lavender_border"
+                android:drawableLeft="@drawable/baseline_drive_file_rename_outline_24"
+                android:drawablePadding="8dp"
                 android:hint="Prenom*"
-                android:drawableLeft="@drawable/baseline_drive_file_rename_outline_24"
-                android:drawablePadding="8dp"/>
+                android:padding="8dp" />
 
             <EditText
-                android:layout_width="350dp"
-                android:layout_height="60dp"
                 android:id="@+id/nom"
-                android:background="@drawable/lavender_border"
+                android:layout_width="350dp"
+                android:layout_height="60dp"
                 android:layout_marginTop="10dp"
-                android:padding="8dp"
-                android:hint="Nom*"
+                android:background="@drawable/lavender_border"
                 android:drawableLeft="@drawable/baseline_drive_file_rename_outline_24"
-                android:drawablePadding="8dp"/>
+                android:drawablePadding="8dp"
+                android:hint="Nom*"
+                android:padding="8dp" />
 
             <EditText
-                android:layout_width="350dp"
-                android:layout_height="60dp"
                 android:id="@+id/numtele"
-                android:background="@drawable/lavender_border"
+                android:layout_width="350dp"
+                android:layout_height="60dp"
                 android:layout_marginTop="10dp"
-                android:padding="8dp"
-                android:hint="Numero Telephone*"
+                android:background="@drawable/lavender_border"
                 android:drawableLeft="@drawable/baseline_local_phone_24"
-                android:drawablePadding="8dp"/>
+                android:drawablePadding="8dp"
+                android:hint="Numero Telephone*"
+                android:padding="8dp" />
 
             <EditText
-                android:layout_width="350dp"
-                android:layout_height="60dp"
                 android:id="@+id/email"
-                android:background="@drawable/lavender_border"
+                android:layout_width="350dp"
+                android:layout_height="60dp"
                 android:layout_marginTop="10dp"
-                android:padding="8dp"
-                android:hint="Email*"
+                android:background="@drawable/lavender_border"
                 android:drawableLeft="@drawable/baseline_email_24"
-                android:drawablePadding="8dp"/>
+                android:drawablePadding="8dp"
+                android:hint="Email*"
+                android:padding="8dp" />
 
 
             <EditText
-                android:layout_width="350dp"
-                android:layout_height="60dp"
                 android:id="@+id/password"
-                android:background="@drawable/lavender_border"
-                android:layout_marginTop="10dp"
-                android:padding="8dp"
-                android:hint="Mot de passe*"
-
-                android:drawableLeft="@drawable/lock24"
-                android:drawablePadding="8dp"/>
-            <EditText
                 android:layout_width="350dp"
                 android:layout_height="60dp"
-                android:id="@+id/passwordConfirmation"
-                android:background="@drawable/lavender_border"
                 android:layout_marginTop="10dp"
-                android:padding="8dp"
-                android:hint="Confirmez le mot de passe*"
+                android:background="@drawable/lavender_border"
                 android:drawableLeft="@drawable/lock24"
-                android:drawablePadding="8dp"/>
+                android:drawablePadding="8dp"
+
+                android:hint="Mot de passe*"
+                android:padding="8dp" />
+
+            <EditText
+                android:id="@+id/passwordConfirmation"
+                android:layout_width="350dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/lavender_border"
+                android:drawableLeft="@drawable/lock24"
+                android:drawablePadding="8dp"
+                android:hint="Confirmez le mot de passe*"
+                android:padding="8dp" />
 
             <Button
                 android:id="@+id/modifier"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="30dp"
-                android:textColor="@color/white"
                 android:backgroundTint="@color/purple"
                 android:text="Modifier et Sauvegarder"
+                android:textColor="@color/white"
                 android:textSize="18sp" />
-
-
 
 
         </LinearLayout>
@@ -135,12 +133,13 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
             app:layout_constraintBottom_toBottomOf="@+id/bottomNav"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_alignParentBottom="true"
             app:layout_constraintStart_toStartOf="parent">
 
         </FrameLayout>
@@ -150,13 +149,12 @@
             android:id="@+id/bottomNav"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_alignParentBottom="true"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:menu="@menu/menu_bottom" />
     </RelativeLayout>
-
 
 
 </LinearLayout>

@@ -8,10 +8,9 @@ import androidx.annotation.Nullable;
 
 public class NavigationService extends IntentService {
 
-    private static final String TAG = "NavigationService";
-
     public static final String ACTION_NAVIGATE = "com.tp.transport.action.NAVIGATE";
     public static final String EXTRA_PAGE = "com.tp.transport.extra.PAGE";
+    private static final String TAG = "NavigationService";
 
     public NavigationService() {
         super("NavigationService");

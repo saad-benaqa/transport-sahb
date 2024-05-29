@@ -1,18 +1,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/nav_signale"
-        android:title=""
         android:icon="@drawable/baseline_warning_24"
-        />
+        android:title="" />
 
     <item
         android:id="@+id/nav_home"
-        android:title=""
-        android:icon="@drawable/home24"/>
+        android:icon="@drawable/home24"
+        android:title="" />
 
     <item
         android:id="@+id/nav_res"
-        android:title=""
-        android:icon="@drawable/baseline_person_24"/>
+        android:icon="@drawable/baseline_person_24"
+        android:title="" />
 
 </menu>

@@ -1,33 +1,31 @@
 package com.tp.transport;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class ResponsableActivity extends AppCompatActivity {
 
-    Button reportButton;
     private static final int PICK_IMAGE_REQUEST = 1;
+    Button reportButton;
+    ActivityResultLauncher<Intent> resultLauncher;
+    ImageView back;
     private ImageView imageView;
     private Button pickImageButton;
     private Button userModeButton;
-
-    ActivityResultLauncher<Intent> resultLauncher;
-    ImageView back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

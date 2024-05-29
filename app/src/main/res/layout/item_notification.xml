@@ -24,25 +24,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Notification Title"
+                android:textColor="@android:color/black"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/black" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvNotificationContent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Notification content goes here."
-                android:textSize="16sp"
-                android:textColor="@android:color/darker_gray" />
+                android:textColor="@android:color/darker_gray"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <ImageView
             android:id="@+id/ivNotificationIcon"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/ic_yellow_bell"
             android:layout_gravity="center_vertical"
-            android:contentDescription="Notification Icon" />
+            android:contentDescription="Notification Icon"
+            android:src="@drawable/ic_yellow_bell" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

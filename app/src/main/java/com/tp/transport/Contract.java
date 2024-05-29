@@ -4,7 +4,8 @@ import android.provider.BaseColumns;
 
 public final class Contract {
     // Constructeur privé pour empêcher l'instanciation de cette classe
-    private Contract() {}
+    private Contract() {
+    }
 
     /* Définition du schéma de la table des utilisateurs */
     public static class UserEntry implements BaseColumns {

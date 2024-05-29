@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
 
     <LinearLayout
@@ -15,29 +13,29 @@
         tools:context=".MainActivity">
 
         <include
-            layout="@layout/itenerary_bar"
-            android:id="@+id/itenerary_bar"/>
+            android:id="@+id/itenerary_bar"
+            layout="@layout/itenerary_bar" />
 
 
         <!-- Section pour entrer le départ -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:padding="16dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Départ"
-                android:textColor="@android:color/white"
-                android:textSize="20sp"
                 android:background="@color/dark_blue"
                 android:paddingStart="8dp"
-                android:paddingEnd="8dp"
                 android:paddingTop="4dp"
-                android:paddingBottom="4dp" />
+                android:paddingEnd="8dp"
+                android:paddingBottom="4dp"
+                android:text="Départ"
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
 
             <EditText
                 android:id="@+id/editTextDepart"
@@ -54,21 +52,21 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:padding="16dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Arrivée"
-                android:textColor="@android:color/white"
-                android:textSize="20sp"
                 android:background="@color/dark_blue"
                 android:paddingStart="8dp"
-                android:paddingEnd="8dp"
                 android:paddingTop="4dp"
-                android:paddingBottom="4dp" />
+                android:paddingEnd="8dp"
+                android:paddingBottom="4dp"
+                android:text="Arrivée"
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
 
             <EditText
                 android:id="@+id/editTextArrivee"
@@ -80,7 +78,6 @@
                 android:padding="12dp" />
 
         </LinearLayout>
-
 
 
     </LinearLayout>

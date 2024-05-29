@@ -2,7 +2,6 @@ package com.tp.transport;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +17,6 @@ public class TraficInfoAdapter extends RecyclerView.Adapter<TraficInfoAdapter.Tr
     private final List<TraficInfo> signalementList;
     private final OnItemClickListener onItemClickListener;
     private final Context context;
-
-    public interface OnItemClickListener {
-        void onItemClick(TraficInfo traficInfo);
-    }
 
     public TraficInfoAdapter(Context context, List<TraficInfo> signalementList, OnItemClickListener onItemClickListener) {
         this.context = context;
@@ -45,6 +40,10 @@ public class TraficInfoAdapter extends RecyclerView.Adapter<TraficInfoAdapter.Tr
     @Override
     public int getItemCount() {
         return signalementList.size();
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(TraficInfo traficInfo);
     }
 
     public class TraficViewHolder extends RecyclerView.ViewHolder {

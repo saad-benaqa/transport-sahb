@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
     android:id="@+id/signalements_bar"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/linear_lll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:orientation="horizontal"
-        android:id="@+id/linear_lll"
         android:layout_marginTop="0dp"
+        android:orientation="horizontal"
+        android:padding="10dp"
         tools:ignore="MissingConstraints">
 
         <ImageView
+            android:id="@+id/back11"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginTop="-5dp"
-            android:id="@+id/back11"
             android:clickable="true"
-            android:onClick="onButtonClick"
+            android:contentDescription="TODO"
             android:focusable="true"
+            android:onClick="onButtonClick"
             android:src="@drawable/baseline_keyboard_backspace_24"
-            tools:ignore="ExtraText"
-            android:contentDescription="TODO" />
+            tools:ignore="ExtraText" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Mes Signalements"
-            android:textSize="22dp"
             android:gravity="center"
-            android:textStyle="bold"
-            android:textColor="@color/dark_blue"/>
+            android:text="Mes Signalements"
+            android:textColor="@color/dark_blue"
+            android:textSize="22dp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
@@ -43,11 +43,10 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.9dp"
+        android:layout_marginTop="49dp"
         android:background="@color/dark_blue"
         android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:layout_marginTop="49dp"/>
-
+        android:paddingRight="8dp" />
 
 
 </RelativeLayout>

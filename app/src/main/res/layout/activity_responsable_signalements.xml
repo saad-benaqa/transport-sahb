@@ -7,15 +7,15 @@
     tools:context=".TraficInfoActivity">
 
     <include
-        layout="@layout/esp_res_sign_bar"
-        android:id="@+id/bar1"/>
+        android:id="@+id/bar1"
+        layout="@layout/esp_res_sign_bar" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
         app:layout_constraintBottom_toBottomOf="@+id/bottomNav"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_alignParentBottom="true"
         app:layout_constraintStart_toStartOf="parent">
 
     </FrameLayout>
@@ -25,29 +25,29 @@
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_alignParentBottom="true"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/menu_bottom" />
 
 
     <RelativeLayout
+        android:id="@+id/laylay11"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/bar1"
-        android:layout_marginTop="50dp"
-        android:id="@+id/laylay11">
+        android:layout_marginTop="50dp">
 
         <!-- RecyclerView pour afficher la liste des signalements -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="8dp"
-            android:clipToPadding="false"
             android:background="@android:color/white"
-            android:scrollbars="vertical"/>
+            android:clipToPadding="false"
+            android:padding="8dp"
+            android:scrollbars="vertical" />
 
 
     </RelativeLayout>

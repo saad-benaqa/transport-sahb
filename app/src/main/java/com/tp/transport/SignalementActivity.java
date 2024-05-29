@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -32,14 +31,13 @@ import java.util.List;
 
 public class SignalementActivity extends AppCompatActivity {
 
+    private static final int REQUEST_CALENDAR_PERMISSIONS = 100;
     private FirebaseFirestore db;
     private List<GererSignalement> signalementList;
     private SignalementAdapter adapter;
     private FirebaseAuth mAuth;
     private ImageView retourButton;
     private Button signalerButton;
-
-    private static final int REQUEST_CALENDAR_PERMISSIONS = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

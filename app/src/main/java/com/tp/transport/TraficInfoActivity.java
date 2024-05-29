@@ -54,15 +54,15 @@ public class TraficInfoActivity extends AppCompatActivity {
         nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (item.getItemId()==R.id.nav_signale){
+                if (item.getItemId() == R.id.nav_signale) {
                     Intent intent = new Intent(TraficInfoActivity.this, SignalementActivity.class);
                     startActivity(intent);
                     return true;
-                }else if(item.getItemId()==R.id.nav_home) {
+                } else if (item.getItemId() == R.id.nav_home) {
                     Intent intent = new Intent(TraficInfoActivity.this, MainActivity.class);
                     startActivity(intent);
                     return true;
-                }else if(item.getItemId()==R.id.nav_res) {
+                } else if (item.getItemId() == R.id.nav_res) {
                     Intent intent = new Intent(TraficInfoActivity.this, EspResActivity.class);
                     startActivity(intent);
                     return true;
