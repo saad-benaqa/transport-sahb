@@ -1,14 +1,15 @@
 package com.tp.transport;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import static com.tp.transport.AddPicActivity.REQUEST_IMAGE_CAPTURE;
 
+import androidx.appcompat.app.AppCompatActivity;
+import android.Manifest;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Patterns;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,18 +20,33 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class SignalerActivity extends AppCompatActivity {
 
@@ -41,6 +57,13 @@ public class SignalerActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private Calendar calendar;
+    private List<Uri> photoUris = new ArrayList<>();
+    private RecyclerView recyclerViewPhotos;
+    private PhotosAdapter photosAdapter;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+    private ActivityResultLauncher<Intent> pickImageLauncher;
+    private ActivityResultLauncher<Intent> takePhotoLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +86,10 @@ public class SignalerActivity extends AppCompatActivity {
         editTextCustomProblemType = findViewById(R.id.edit_text_custom_problem_type);
         Button submitButton = findViewById(R.id.submit_button);
         spinnerGravity = findViewById(R.id.spinner_gravity);
+        RecyclerView recyclerViewPhotos = findViewById(R.id.recyclerViewPhotos);
+        recyclerViewPhotos.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        PhotosAdapter photosAdapter = new PhotosAdapter(photoUris);
+        recyclerViewPhotos.setAdapter(photosAdapter);
 
         // Initialize suggested problem types
         Log.d(TAG, "onCreate: Initializing suggested problem types");
@@ -74,8 +101,6 @@ public class SignalerActivity extends AppCompatActivity {
                 "Problème pour personnes à mobilité réduite",
                 "Autre" // Add an "Other" option
         };
-
-
 
         // Populate the spinner with suggested problem types
         Log.d(TAG, "onCreate: Populating spinner with suggested problem types");
@@ -144,28 +169,45 @@ public class SignalerActivity extends AppCompatActivity {
             Log.d(TAG, "submitButton: Clicked");
             submitReport();
         });
-
-        BottomNavigationView nav = findViewById(R.id.bottomNav);
-        /*nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Log.d(TAG, "onNavigationItemSelected: " + item.getItemId());
-                Intent intent;
-                int itemId = item.getItemId();
-                if (itemId == R.id.nav_signale) {
-                    return true;
-                } else if (itemId == R.id.nav_home) {
-                    intent = new Intent(SignalerActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    return true;
-                } else if (itemId == R.id.nav_res) {
-                    intent = new Intent(SignalerActivity.this, EspResActivity.class);
-                    startActivity(intent);
-                    return true;
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+        pickImageLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        Intent data = result.getData();
+                        if (data != null) {
+                            if (data.getClipData() != null) {
+                                int count = data.getClipData().getItemCount();
+                                for (int i = 0; i < count; i++) {
+                                    Uri imageUri = data.getClipData().getItemAt(i).getUri();
+                                    photoUris.add(imageUri);
+                                }
+                            } else if (data.getData() != null) {
+                                Uri imageUri = data.getData();
+                                photoUris.add(imageUri);
+                            }
+                            photosAdapter.notifyDataSetChanged();
+                        }
+                    }
                 }
-                return false;
-            }
-        });*/
+        );
+
+        takePhotoLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        Intent data = result.getData();
+                        if (data != null) {
+                            Bundle extras = data.getExtras();
+                            Bitmap imageBitmap = (Bitmap) extras.get("data");
+                            Uri imageUri = getImageUri(imageBitmap);
+                            photoUris.add(imageUri);
+                            photosAdapter.notifyDataSetChanged();
+                        }
+                    }
+                }
+        );
     }
 
     private void updateLabel() {
@@ -206,8 +248,6 @@ public class SignalerActivity extends AppCompatActivity {
         if (user != null) {
             String userId = user.getUid();
             long timestamp = System.currentTimeMillis();
-
-
             String email = user.getEmail();
 
             Map<String, Object> signalement = new HashMap<>();
@@ -222,20 +262,91 @@ public class SignalerActivity extends AppCompatActivity {
             signalement.put("timestamp", timestamp);
             signalement.put("contactEmail", email);
 
-            db.collection("signalements")
-                    .add(signalement)
-                    .addOnSuccessListener(documentReference -> {
-                        Log.d(TAG, "submitReport: Signalement added");
-                        Toast.makeText(SignalerActivity.this, "Signalement ajouté", Toast.LENGTH_SHORT).show();
-                        finish();
-                    })
-                    .addOnFailureListener(e -> {
-                        Log.d(TAG, "submitReport: Error adding signalement", e);
-                        Toast.makeText(SignalerActivity.this, "Erreur lors de l'ajout du signalement", Toast.LENGTH_SHORT).show();
-                    });
+            // Upload photos and get their URLs
+            uploadPhotosAndSubmit(signalement);
         } else {
             Log.d(TAG, "submitReport: User not authenticated");
             Toast.makeText(this, "Utilisateur non authentifié.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void uploadPhotosAndSubmit(Map<String, Object> signalement) {
+        if (photoUris.isEmpty()) {
+            submitToFirestore(signalement);
+            return;
+        }
+
+        List<String> photoUrls = new ArrayList<>();
+        for (Uri photoUri : photoUris) {
+            StorageReference photoRef = storageReference.child("images/" + UUID.randomUUID().toString());
+            photoRef.putFile(photoUri)
+                    .addOnSuccessListener(taskSnapshot -> photoRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                        photoUrls.add(uri.toString());
+                        if (photoUrls.size() == photoUris.size()) {
+                            signalement.put("photoUrls", photoUrls);
+                            submitToFirestore(signalement);
+                        }
+                    }))
+                    .addOnFailureListener(e -> {
+                        Log.d(TAG, "uploadPhotosAndSubmit: Error uploading photo", e);
+                        Toast.makeText(SignalerActivity.this, "Erreur lors du téléchargement des photos", Toast.LENGTH_SHORT).show();
+                    });
+        }
+    }
+
+    private void submitToFirestore(Map<String, Object> signalement) {
+        db.collection("signalements")
+                .add(signalement)
+                .addOnSuccessListener(documentReference -> {
+                    Log.d(TAG, "submitReport: Signalement added");
+                    Toast.makeText(SignalerActivity.this, "Signalement ajouté", Toast.LENGTH_SHORT).show();
+                    finish();
+                })
+                .addOnFailureListener(e -> {
+                    Log.d(TAG, "submitReport: Error adding signalement", e);
+                    Toast.makeText(SignalerActivity.this, "Erreur lors de l'ajout du signalement", Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    public void onImportPhotoButtonClick(View view) {
+        CharSequence[] options = {"Take Photo", "Choose from Gallery"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Add Photo");
+        builder.setItems(options, (dialog, which) -> {
+            if (which == 0) {
+                dispatchTakePictureIntent();
+            } else if (which == 1) {
+                dispatchPickImageIntent();
+            }
+        });
+        builder.show();
+    }
+
+    private void dispatchPickImageIntent() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        pickImageLauncher.launch(intent);
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            takePhotoLauncher.launch(takePictureIntent);
+        }
+    }
+
+    private Uri getImageUri(Bitmap bitmap) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "Title", null);
+        return Uri.parse(path);
+    }
+
+    private void checkCameraPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_IMAGE_CAPTURE);
+        } else {
+            dispatchTakePictureIntent();
         }
     }
 }

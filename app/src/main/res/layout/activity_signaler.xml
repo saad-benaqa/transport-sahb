@@ -251,6 +251,7 @@
                 android:background="@color/darkdark_blue"
                 android:onClick="onImportPhotoButtonClick" />
 
+
             <!-- Accept Terms Checkbox -->
             <CheckBox
                 android:id="@+id/accept_terms_checkbox"
@@ -260,6 +261,11 @@
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
                 android:padding="16dp" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewPhotos"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="16dp"/>
 
             <!-- Submit Button -->
             <Button
@@ -273,5 +279,7 @@
                 android:paddingVertical="16dp" />
 
         </LinearLayout>
+
     </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
