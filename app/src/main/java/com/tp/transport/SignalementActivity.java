@@ -2,9 +2,14 @@ package com.tp.transport;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.view.MenuItem;
@@ -15,6 +20,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -159,20 +165,59 @@ public class SignalementActivity extends AppCompatActivity {
 
             db.collection("signalements")
                     .whereEqualTo("userId", userId)
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            for (DocumentChange document : task.getResult().getDocumentChanges()) {
-                                GererSignalement signalement = document.getDocument().toObject(GererSignalement.class);
-                                signalementList.add(signalement);
-                            }
-                            adapter.notifyDataSetChanged();
-                        } else {
+                    .addSnapshotListener((snapshots, e) -> {
+                        if (e != null) {
                             Toast.makeText(SignalementActivity.this, "Erreur lors du chargement des signalements", Toast.LENGTH_SHORT).show();
+                            return;
                         }
+
+                        for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                            switch (dc.getType()) {
+                                case ADDED:
+                                    GererSignalement signalement = dc.getDocument().toObject(GererSignalement.class);
+                                    signalementList.add(signalement);
+                                    sendNotification(signalement);
+                                    break;
+                                case MODIFIED:
+                                    // Handle modified documents if needed
+                                    break;
+                                case REMOVED:
+                                    // Handle removed documents if needed
+                                    break;
+                            }
+                        }
+                        adapter.notifyDataSetChanged();
                     });
         } else {
             Toast.makeText(SignalementActivity.this, "Utilisateur non authentifié", Toast.LENGTH_SHORT).show();
         }
     }
+    private void sendNotification(GererSignalement signalement) {
+        String date = signalement.getDate();
+
+        String title = signalement.getProblemType() + " le " + date;
+        String body = signalement.getDescription();
+
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
+
+        String channelId = "SignalementChannel";
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId)
+                .setContentTitle(title)
+                .setContentText(body)
+                .setAutoCancel(true)
+                .setSmallIcon(R.drawable.ic_warning_notification) // Replace with your app's notification icon
+                .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(channelId, "Signalement Notifications", NotificationManager.IMPORTANCE_DEFAULT);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        notificationManager.notify(0, notificationBuilder.build());
+    }
+
 }
