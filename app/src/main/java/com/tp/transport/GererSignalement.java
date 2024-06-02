@@ -5,15 +5,14 @@ public class GererSignalement {
     private String contactEmail;
     private String gravity;
     private String description;
-    private String location;
+    private String location; // This is the 'ville' field
     private String date;
 
-    // Getters
+    // Getters and Setters
     public String getProblemType() {
         return problemType;
     }
 
-    // Setters
     public void setProblemType(String problemType) {
         this.problemType = problemType;
     }
