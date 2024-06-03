@@ -15,11 +15,24 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewNotifications"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="15dp"
-        android:layout_above="@id/bottomNav"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_below="@id/notification_bar"
+        android:padding="15dp"
+        android:layout_above="@id/clearNotificationsButton"
         />
+
+    <Button
+        android:id="@+id/clearNotificationsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Clear All"
+        android:backgroundTint="@color/colorAccent"
+        android:textColor="@android:color/white"
+        android:elevation="4dp"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/bottomNav"
+        android:layout_marginBottom="16dp"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
