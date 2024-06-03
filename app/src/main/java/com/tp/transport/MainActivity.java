@@ -132,8 +132,6 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                     return true;
                 } else if (item.getItemId() == R.id.nav_home) {
-                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                    startActivity(intent);
                     return true;
                 } else if (item.getItemId() == R.id.nav_res) {
                     Intent intent = new Intent(MainActivity.this, DashActivity.class);

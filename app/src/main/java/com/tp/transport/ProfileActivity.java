@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -60,7 +61,17 @@ public class ProfileActivity extends Activity {
         setupPickImageButton();
         setupBackButton();
         setupModifierButton();
-        loadUserInfo(); // Charge les informations utilisateur
+        loadUserInfo();
+
+        ImageView arrowBack = findViewById(R.id.back1);
+        arrowBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, DashActivity.class);
+                startActivity(intent);
+                finish(); // Optional: Call this if you want to close the current activity
+            }
+        });
     }
 
     private void initializeViews() {
@@ -86,7 +97,7 @@ public class ProfileActivity extends Activity {
                 startActivity(new Intent(ProfileActivity.this, MainActivity.class));
                 return true;
             } else if (itemId == R.id.nav_res) {
-                startActivity(new Intent(ProfileActivity.this, EspResActivity.class));
+                startActivity(new Intent(ProfileActivity.this, DashActivity.class));
                 return true;
             }
             return false;

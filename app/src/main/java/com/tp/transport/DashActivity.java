@@ -38,6 +38,17 @@ public class DashActivity extends AppCompatActivity {
         textdenom = findViewById(R.id.textdenom);
         textdemail = findViewById(R.id.textdeemail);
         imageView6 = findViewById(R.id.imageView6);
+        setupBottomNavigationView();
+
+        ImageView arrowBack = findViewById(R.id.imageView8);
+        arrowBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DashActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish(); // Optional: Call this if you want to close the current activity
+            }
+        });
 
         // Set the outline provider for the ImageView
         imageView6.setOutlineProvider(ViewOutlineProvider.BACKGROUND);
@@ -45,28 +56,6 @@ public class DashActivity extends AppCompatActivity {
         // Load user information from Firestore
         loadUserInfo();
 
-        BottomNavigationView nav = findViewById(R.id.bottomNav);
-        nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                String page = null;
-                if (item.getItemId() == R.id.nav_signale) {
-                    page = "Signalements";
-                } else if (item.getItemId() == R.id.nav_home) {
-                    page = "Home";
-                } else if (item.getItemId() == R.id.nav_res) {
-                    page = "Responsable";
-                }
-
-                if (page != null) {
-                    navigateToPage(page);
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        // Set onClickListeners for the layouts
         findViewById(R.id.informationsLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -164,5 +153,22 @@ public class DashActivity extends AppCompatActivity {
                 throw new IllegalArgumentException("Unknown page: " + page);
         }
         startActivity(intent);
+    }
+    private void setupBottomNavigationView() {
+        BottomNavigationView nav = findViewById(R.id.bottomNav);
+        nav.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_signale) {
+                startActivity(new Intent(DashActivity.this, SignalementActivity.class));
+                return true;
+            } else if (itemId == R.id.nav_home) {
+                startActivity(new Intent(DashActivity.this, MainActivity.class));
+                return true;
+            } else if (itemId == R.id.nav_res) {
+
+                return true;
+            }
+            return false;
+        });
     }
 }

@@ -1,5 +1,7 @@
 package com.tp.transport;
 
+import java.util.List;
+
 public class GererSignalement {
     private String problemType;
     private String contactEmail;
@@ -7,6 +9,7 @@ public class GererSignalement {
     private String description;
     private String location; // This is the 'ville' field
     private String date;
+    private List<String> photoUrls; // Add this field
 
     // Getters and Setters
     public String getProblemType() {
@@ -55,5 +58,13 @@ public class GererSignalement {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public List<String> getPhotoUrls() {
+        return photoUrls;
+    }
+
+    public void setPhotoUrls(List<String> photoUrls) {
+        this.photoUrls = photoUrls;
     }
 }
