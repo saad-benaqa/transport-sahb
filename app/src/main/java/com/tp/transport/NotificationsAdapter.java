@@ -1,66 +1,65 @@
 package com.tp.transport;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdapter.ViewHolder> {
 
-    private final List<NotificationItem> notificationList;
-    private final Context context;
+    private List<Notification> notificationsList;
 
-    public NotificationsAdapter(List<NotificationItem> notificationList, Context context) {
-        this.notificationList = notificationList;
-        this.context = context;
+    public NotificationsAdapter(List<Notification> notificationsList) {
+        this.notificationsList = notificationsList;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_notification, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.notification_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        NotificationItem notification = notificationList.get(position);
-        holder.tvNotificationTitle.setText(notification.getTitle());
-        holder.tvNotificationContent.setText(notification.getContent());
+        Notification notification = notificationsList.get(position);
+        holder.title.setText(notification.getTitle());
+        holder.body.setText(notification.getBody());
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Animation scaleUp = AnimationUtils.loadAnimation(context, R.anim.scale_up);
-                v.startAnimation(scaleUp);
-            }
-        });
+        // Load the first image URL if available
+        if (notification.getPhotoUrls() != null && !notification.getPhotoUrls().isEmpty()) {
+            String imageUrl = notification.getPhotoUrls().get(0);
+            Glide.with(holder.itemView.getContext())
+                    .load(imageUrl)
+                    .into(holder.image);
+        } else {
+            holder.image.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return notificationList.size();
+        return notificationsList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvNotificationTitle;
-        TextView tvNotificationContent;
-        ImageView ivNotificationIcon;
+        public TextView title;
+        public TextView body;
+        public ImageView image;
 
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            tvNotificationTitle = itemView.findViewById(R.id.tvNotificationTitle);
-            tvNotificationContent = itemView.findViewById(R.id.tvNotificationContent);
-            ivNotificationIcon = itemView.findViewById(R.id.ivNotificationIcon);
+        public ViewHolder(View view) {
+            super(view);
+            title = view.findViewById(R.id.notificationTitle);
+            body = view.findViewById(R.id.notificationBody);
+            image = view.findViewById(R.id.notificationImage);
         }
     }
 }

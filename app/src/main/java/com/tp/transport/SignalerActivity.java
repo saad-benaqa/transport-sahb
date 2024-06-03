@@ -5,13 +5,21 @@ import static com.tp.transport.AddPicActivity.REQUEST_IMAGE_CAPTURE;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -29,8 +37,10 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,6 +59,9 @@ import org.osmdroid.util.GeoPoint;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -317,14 +330,15 @@ public class SignalerActivity extends AppCompatActivity {
                         if (photoUrls.size() == photoUris.size()) {
                             signalement.put("photoUrls", photoUrls);
                             submitToFirestore(signalement);
+                            sendNotificationToAllUsers("Un nouveau problème a été signalé", "Consulter votre trafic info", photoUrls);
                         }
                     }))
                     .addOnFailureListener(e -> {
-                        Log.d(TAG, "uploadPhotosAndSubmit: Error uploading photo", e);
                         Toast.makeText(SignalerActivity.this, "Erreur lors du téléchargement des photos", Toast.LENGTH_SHORT).show();
                     });
         }
     }
+
 
     private void submitToFirestore(Map<String, Object> signalement) {
         db.collection("signalements")
@@ -454,4 +468,100 @@ public class SignalerActivity extends AppCompatActivity {
             Log.e(TAG, "Geocoder exception: " + e.getMessage());
         }
     }
+    private void sendNotificationToAllUsers(String title, String body, List<String> photoUrls) {
+        new FetchBitmapTask(title, body, photoUrls).execute();
+        saveNotificationToDatabase(title, body, photoUrls);
+    }
+    private class FetchBitmapTask extends AsyncTask<Void, Void, Bitmap> {
+        private String title;
+        private String body;
+        private List<String> photoUrls;
+
+        FetchBitmapTask(String title, String body, List<String> photoUrls) {
+            this.title = title;
+            this.body = body;
+            this.photoUrls = photoUrls;
+        }
+
+        @Override
+        protected Bitmap doInBackground(Void... voids) {
+            if (photoUrls != null && !photoUrls.isEmpty()) {
+                String photoUrl = photoUrls.get(0);
+                return getBitmapFromURL(photoUrl);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            buildAndSendNotification(title, body, bitmap);
+        }
+    }
+    private void buildAndSendNotification(String title, String body, @Nullable Bitmap bitmap) {
+        Intent intent = new Intent(this, SignalerActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
+
+        String channelId = "SignalementChannel";
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId)
+                .setContentTitle(title)
+                .setContentText(body)
+                .setAutoCancel(true)
+                .setSmallIcon(R.drawable.ic_warning_notification)
+                .setContentIntent(pendingIntent)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)  // Set high priority for heads-up notification
+                .setDefaults(NotificationCompat.DEFAULT_ALL);  // Use default settings for sound, vibration, etc.
+
+        if (bitmap != null) {
+            notificationBuilder.setStyle(new NotificationCompat.BigPictureStyle()
+                    .bigPicture(bitmap)
+                    .bigLargeIcon((Bitmap) null));
+        }
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(channelId, "Signalement Notifications", NotificationManager.IMPORTANCE_HIGH);  // Set channel importance to high
+            channel.setDescription("Notifications for new signalements");
+            channel.enableLights(true);
+            channel.setLightColor(Color.RED);
+            channel.enableVibration(true);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        notificationManager.notify(0, notificationBuilder.build());
+    }
+
+    private Bitmap getBitmapFromURL(String src) {
+        try {
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            return BitmapFactory.decodeStream(input);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    private void saveNotificationToDatabase(String title, String body, List<String> photoUrls) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String, Object> notification = new HashMap<>();
+        notification.put("title", title);
+        notification.put("body", body);
+        notification.put("photoUrls", photoUrls);
+        notification.put("timestamp", System.currentTimeMillis());
+
+        db.collection("notifications")
+                .add(notification)
+                .addOnSuccessListener(documentReference -> {
+                    Log.d(TAG, "Notification saved to database");
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error saving notification to database", e);
+                });
+    }
+
+
 }

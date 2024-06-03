@@ -63,7 +63,7 @@ public class TraficInfoActivity extends AppCompatActivity {
                     startActivity(intent);
                     return true;
                 } else if (item.getItemId() == R.id.nav_res) {
-                    Intent intent = new Intent(TraficInfoActivity.this, EspResActivity.class);
+                    Intent intent = new Intent(TraficInfoActivity.this, DashActivity.class);
                     startActivity(intent);
                     return true;
                 }
@@ -82,7 +82,7 @@ public class TraficInfoActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TraficInfoActivity.this, MainActivity.class);
+                Intent intent = new Intent(TraficInfoActivity.this, DashActivity.class);
                 startActivity(intent);
             }
         });

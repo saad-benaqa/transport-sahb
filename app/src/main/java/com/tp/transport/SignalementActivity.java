@@ -1,5 +1,7 @@
 package com.tp.transport;
 
+import static com.google.firebase.appcheck.internal.util.Logger.TAG;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
@@ -12,6 +14,7 @@ import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.CalendarContract;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -194,7 +197,6 @@ public class SignalementActivity extends AppCompatActivity {
     }
     private void sendNotification(GererSignalement signalement) {
         String date = signalement.getDate();
-
         String title = signalement.getProblemType() + " le " + date;
         String body = signalement.getDescription();
 
@@ -214,10 +216,16 @@ public class SignalementActivity extends AppCompatActivity {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(channelId, "Signalement Notifications", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("Channel for signalement notifications");
             notificationManager.createNotificationChannel(channel);
         }
 
-        notificationManager.notify(0, notificationBuilder.build());
-    }
+        try {
+            notificationManager.notify(0, notificationBuilder.build());
+            Log.d(TAG, "Notification sent: " + title + " - " + body);
+        } catch (Exception e) {
+            Log.e(TAG, "Error sending notification", e);
+            Toast.makeText(this, "Failed to send notification", Toast.LENGTH_SHORT).show();
+        }
 
-}
+}}

@@ -1,69 +1,97 @@
 package com.tp.transport;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationsActivity extends AppCompatActivity {
 
-    private RecyclerView rvNotifications;
-    private TextView tvNoNotifications;
-    private NotificationsAdapter adapter;
-    private List<NotificationItem> notificationList;
-    private ImageView backres;
+    private static final String TAG = "NotificationsActivity";
+    private RecyclerView recyclerView;
+    private NotificationsAdapter notificationsAdapter;
+    private List<Notification> notificationsList;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notifications);
 
-        rvNotifications = findViewById(R.id.rvNotifications);
-        tvNoNotifications = findViewById(R.id.tvNoNotifications);
-        backres = findViewById(R.id.backres);
+        recyclerView = findViewById(R.id.recyclerViewNotifications);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        backres.setOnClickListener(new View.OnClickListener() {
+        notificationsList = new ArrayList<>();
+        notificationsAdapter = new NotificationsAdapter(notificationsList);
+        recyclerView.setAdapter(notificationsAdapter);
+        setupBottomNavigationView();
+
+        loadNotifications();
+        ImageView arrowBack = findViewById(R.id.backres);
+        arrowBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish(); // Return to the previous activity
+                Intent intent = new Intent(NotificationsActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish(); // Optional: Call this if you want to close the current activity
             }
         });
-
-        notificationList = new ArrayList<>();
-        // Load notifications from your data source
-        loadNotifications();
-
-        adapter = new NotificationsAdapter(notificationList, this);
-        rvNotifications.setLayoutManager(new LinearLayoutManager(this));
-        rvNotifications.setAdapter(adapter);
-
-        if (notificationList.isEmpty()) {
-            tvNoNotifications.setVisibility(View.VISIBLE);
-        } else {
-            tvNoNotifications.setVisibility(View.GONE);
-        }
     }
 
     private void loadNotifications() {
-        // This is where you would load notifications from your data source
-        // For now, we'll add some dummy data
-        notificationList.add(new NotificationItem("Title 1", "Content 1"));
-        notificationList.add(new NotificationItem("Title 2", "Content 2"));
-    }
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("notifications")
+                .orderBy("timestamp")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (error != null) {
+                            Log.w(TAG, "Listen failed.", error);
+                            return;
+                        }
 
-    public void deleteNotification(int position) {
-        notificationList.remove(position);
-        adapter.notifyItemRemoved(position);
-        if (notificationList.isEmpty()) {
-            tvNoNotifications.setVisibility(View.VISIBLE);
-        }
+                        notificationsList.clear();
+                        for (QueryDocumentSnapshot doc : value) {
+                            if (doc.exists()) {
+                                Notification notification = doc.toObject(Notification.class);
+                                notificationsList.add(notification);
+                            }
+                        }
+                        notificationsAdapter.notifyDataSetChanged();
+                    }
+                });
+    }
+    private void setupBottomNavigationView() {
+        BottomNavigationView nav = findViewById(R.id.bottomNav);
+        nav.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_signale) {
+                startActivity(new Intent(NotificationsActivity.this, SignalementActivity.class));
+                return true;
+            } else if (itemId == R.id.nav_home) {
+                startActivity(new Intent(NotificationsActivity.this, MainActivity.class));
+                return true;
+            } else if (itemId == R.id.nav_res) {
+                startActivity(new Intent(NotificationsActivity.this, ProfileActivity.class));
+                return true;
+            }
+            return false;
+        });
     }
 }
